@@ -1,0 +1,19 @@
+body {
+    margin: 0;
+    font-family: sans-serif;
+  }
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 1rem;
+  }
+  .input {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  .btn, .button, .input, .shadow-md {
+    /* Placeholder for shadcn/ui or custom styles */
+  }
+  
