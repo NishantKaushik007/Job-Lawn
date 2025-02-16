@@ -8,9 +8,12 @@ export default function LoginPage() {
   const router = useRouter();
   const [form, setForm] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
     setForm({ ...form, [e.target.name]: e.target.value });
+
+  const togglePasswordVisibility = () => setShowPassword((prev) => !prev);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -62,7 +65,10 @@ export default function LoginPage() {
           {/* Logo */}
           <div className="w-8 h-8 mb-8 mx-auto">
             <svg viewBox="0 0 24 24" className="text-white w-full h-full">
-              <path fill="currentColor" d="M12 2L1 12l11 10 11-10L12 2zm0 18.5L3 12l9-8.5 9 8.5-9 8.5z" />
+              <path
+                fill="currentColor"
+                d="M12 2L1 12l11 10 11-10L12 2zm0 18.5L3 12l9-8.5 9 8.5-9 8.5z"
+              />
             </svg>
           </div>
 
@@ -89,20 +95,71 @@ export default function LoginPage() {
               />
             </div>
 
-            <div className="space-y-2">
+            {/* Password input with toggle */}
+            <div className="space-y-2 relative">
               <label htmlFor="password" className="text-sm text-zinc-400">
                 Password
               </label>
               <input
                 id="password"
-                type="password"
+                type={showPassword ? "text" : "password"}
                 name="password"
                 value={form.password}
                 onChange={handleChange}
                 placeholder="********"
                 required
-                className="w-full h-12 px-4 rounded-md bg-[#2a2a2a]/50 border border-zinc-700 text-white placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full h-12 px-4 pr-12 rounded-md bg-[#2a2a2a]/50 border border-zinc-700 text-white placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
+              <span
+                onClick={togglePasswordVisibility}
+                className="absolute right-3 top-10 cursor-pointer"
+              >
+                {showPassword ? (
+                  // Eye icon (show password)
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    className="w-6 h-6 text-gray-400"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                    />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M2.458 12C3.732 7.943 7.522 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.478 0-8.268-2.943-9.542-7z"
+                    />
+                  </svg>
+                ) : (
+                  // Eye-off icon (hide password)
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    className="w-6 h-6 text-gray-400"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7a10.05 10.05 0 012.524-4.24M4.465 4.465l15.07 15.07"
+                    />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9.88 9.88A3 3 0 0114.12 14.12"
+                    />
+                  </svg>
+                )}
+              </span>
             </div>
 
             <Button
