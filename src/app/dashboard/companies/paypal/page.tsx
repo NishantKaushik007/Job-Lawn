@@ -183,7 +183,7 @@ export default async function PayPalPage({ searchParams }: { searchParams: Recor
                   posted_date: job.posted_date,
                   description: job.description || '', // Passing job description
                   job_path: job.canonical_url,
-                  normalized_location: job.location_name.join(', '),
+                  normalized_location: job.location_name.join(' | '),
                 }}
                 onToggleDetails={() => {}}
                 isSelected={searchParams.selectedJobId === job.id}

@@ -229,7 +229,7 @@ const MorganStanley = async ({ searchParams }: { searchParams: Record<string, st
                             id_icims: job.display_job_id,
                             posted_date: newPostingDates[job.id] || '', // Use posting date from accumulator
                             job_path: job.canonicalPositionUrl,
-                            normalized_location: job.locations.join(', '),
+                            normalized_location: job.locations.join(' | '),
                             basic_qualifications: '',
                             description: job.description, // Access description from job object
                             preferred_qualifications: '',

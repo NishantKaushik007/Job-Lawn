@@ -194,7 +194,7 @@ const Atlassian = async ({
                   id_icims: job.id.toString(),
                   job_path: job.portalJobPost.portalUrl,
                   postingDate: job.portalJobPost.updatedDate,
-                  normalized_location: job.locations.join(', '),
+                  normalized_location: job.locations.join(' | '),
                   basic_qualifications: job.qualifications || '',
                   description: job.overview || '',
                   preferred_qualifications: '',

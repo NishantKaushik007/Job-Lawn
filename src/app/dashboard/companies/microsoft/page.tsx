@@ -205,7 +205,7 @@ const Microsoft = async ({ searchParams }: MicrosoftProps) => {
                   id_icims: job.jobId,
                   posted_date: job.postingDate,
                   job_path: `https://jobs.careers.microsoft.com/global/en/job/${job.jobId}`,
-                  normalized_location: job.properties.locations.join(', '),
+                  normalized_location: job.properties.locations.join(' | '),
                   basic_qualifications: job.qualifications,
                   description: job.description,
                   responsibilities: job.responsibilities,
