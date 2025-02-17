@@ -2,29 +2,40 @@
 import { z } from "zod";
 
 const emailRegex = /@(gmail|outlook|yahoo|protonmail|rediffmail)\./;
+const usernameRegex = /^[A-Za-z]+(?: [A-Za-z]+)*$/;
+const mobileRegex = /^\d{10}$/;
+const countryCodeRegex = /^\+[1-9]\d{0,2}$/;
 
 export const registerSchema = z.object({
-  username: z
-    .string()
-    .min(3, "Username must be at least 3 characters long"),
-  email: z
-    .string()
-    .email("Invalid email address")
-    .refine((email) => emailRegex.test(email), {
+  username: z.string().refine(
+    (value) => usernameRegex.test(value) && value.length >= 3 && value.length <= 20,
+    {
       message:
-        "Email must be from Gmail, Outlook, Yahoo, ProtonMail or RediffMail",
+        "Username must be 3-20 characters long and can only contain English alphabets with single spaces between words",
     }),
-  password: z
-    .string()
-    .min(6, "Password must be at least 6 characters long"),
+    email: z.string().refine((value) => {
+      // Basic email validation pattern (case-insensitive)
+      const basicEmailPattern = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+      return basicEmailPattern.test(value) && emailRegex.test(value);
+    }, {
+      message: "Invalid email address. Email must be from Gmail, Outlook, Yahoo, ProtonMail or RediffMail",
+    }),
+  password: z.string().regex(
+    /^(?=.*[!@#$%^&*(),.?":{}|<>])(?=.*[A-Z])(?=.*[a-z]).{8,20}$/,
+    "Password must be 8-20 characters long and include at least one uppercase letter, one lowercase letter, and one special character"
+  ),
   mobile: z
     .string()
-    .min(10, "Mobile number must be at least 10 digits")
-    .max(15, "Mobile number must be no longer than 15 digits"),
-  countryCode: z.string().min(1, "Country code is required"),
+    .regex(mobileRegex, "Mobile number must be exactly 10 digits"),
+    countryCode: z
+    .string()
+    .regex(countryCodeRegex, "Country code is invalid. Must start with '+' and then 1 to 3 digits (first digit non-zero)"),
 });
 
 export const loginSchema = z.object({
   email: z.string().email("Invalid email address"),
-  password: z.string().min(6, "Password must be at least 6 characters long"),
+  password: z.string().regex(
+    /^(?=.*[!@#$%^&*(),.?":{}|<>])(?=.*[A-Z])(?=.*[a-z]).{8,20}$/,
+    "Invalid password. Password must be 8-20 characters long and include at least one uppercase letter, one lowercase letter, and one special character"
+  ),
 });
