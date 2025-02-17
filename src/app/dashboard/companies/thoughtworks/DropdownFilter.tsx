@@ -99,9 +99,9 @@ const DropdownFilter: React.FC<DropdownFilterProps> = ({ jobs = [] }) => {
   }
 
   return (
-    <div>
-      <div className="flex flex-col md:flex-row md:space-x-4 mb-6">
-        <div className="flex flex-col mb-4">
+    <div className="flex flex-col mb-6 space-y-4 sm:flex-col sm:space-x-4 sm:space-y-0 w-full">
+      <div className="flex flex-col mb-6 space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0 w-full">
+        
           <Select
             id="country"
             options={countries.map((country) => ({ label: country, value: country }))}
@@ -111,9 +111,9 @@ const DropdownFilter: React.FC<DropdownFilterProps> = ({ jobs = [] }) => {
             classNamePrefix="react-select"
             isClearable
           />
-        </div>
+        
 
-        <div className="flex flex-col mb-4">
+        
           <Select
             id="jobFunction"
             options={jobFunctions.map((func) => ({ label: func, value: func }))}
@@ -123,9 +123,9 @@ const DropdownFilter: React.FC<DropdownFilterProps> = ({ jobs = [] }) => {
             classNamePrefix="react-select"
             isClearable
           />
-        </div>
+        
 
-        <div className="flex flex-col mb-4">
+       
           <Select
             id="remoteEligible"
             options={[
@@ -139,7 +139,7 @@ const DropdownFilter: React.FC<DropdownFilterProps> = ({ jobs = [] }) => {
             classNamePrefix="react-select"
             isClearable
           />
-        </div>
+        
       </div>
 
       <div>

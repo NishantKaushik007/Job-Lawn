@@ -24,7 +24,7 @@ const Thoughtworks = async () => {
   const jobs = await fetchData();
 
   return (
-    <div className="container mx-auto flex flex-col space-y-6 p-4">
+    <div className="flex flex-col md:flex-row md:space-x-4 mb-6 pl-4 pr-4">
       <DropdownFilter jobs={jobs} />
     </div>
   );
