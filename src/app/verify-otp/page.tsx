@@ -14,19 +14,61 @@ export default function VerifyOtpPage() {
   const [timer, setTimer] = useState(120); // 2 minutes
   const [timerActive, setTimerActive] = useState(true);
 
-  // Handle OTP input change
+  // Handle OTP input change: Always overwrite the value even if one already exists
   const handleOtpChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
-    const value = e.target.value;
-    if (value === "" || /^[0-9]{1}$/.test(value)) {
+    let value = e.target.value;
+
+    // If user types more than one digit (e.g. paste without triggering onPaste)
+    if (value.length > 1) {
+      if (/^\d+$/.test(value)) {
+        const digits = value.split("").slice(0, 6);
+        const newOtp = [...otp];
+        digits.forEach((digit, i) => {
+          if (index + i < 6) {
+            newOtp[index + i] = digit;
+          }
+        });
+        setOtp(newOtp);
+        // Move focus to the next input after the pasted segment
+        const nextIndex = index + digits.length;
+        if (nextIndex < 6) {
+          document.getElementById(`otp-input-${nextIndex}`)?.focus();
+        }
+      }
+      return;
+    }
+
+    // Accept only a valid digit or empty string, and overwrite current value.
+    if (value === "" || /^[0-9]$/.test(value)) {
       const newOtp = [...otp];
       newOtp[index] = value;
       setOtp(newOtp);
-
-      // Move focus to next input if a valid number is entered
       if (value && index < otp.length - 1) {
-        const nextInput = document.getElementById(`otp-input-${index + 1}`);
-        nextInput?.focus();
+        document.getElementById(`otp-input-${index + 1}`)?.focus();
       }
+    }
+  };
+
+  // Handle paste event for OTP inputs (attached to all inputs)
+  const handleOtpPaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    const pasteData = e.clipboardData.getData("Text").trim();
+    if (/^\d{6}$/.test(pasteData)) {
+      const pasteDigits = pasteData.split("");
+      setOtp(pasteDigits);
+      // Focus the last input after pasting
+      document.getElementById("otp-input-5")?.focus();
+    }
+  };
+
+  // Handle key down event for left/right arrow navigation
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>, index: number) => {
+    if (e.key === "ArrowLeft" && index > 0) {
+      e.preventDefault();
+      document.getElementById(`otp-input-${index - 1}`)?.focus();
+    } else if (e.key === "ArrowRight" && index < otp.length - 1) {
+      e.preventDefault();
+      document.getElementById(`otp-input-${index + 1}`)?.focus();
     }
   };
 
@@ -64,10 +106,10 @@ export default function VerifyOtpPage() {
     }
   };
 
-  // Trigger resend OTP when the page is loaded (after redirection)
+  // Resend OTP automatically when the page loads
   useEffect(() => {
-    handleResendOtp();  // Resend OTP automatically when the page loads
-  }, []);  // Empty dependency array to run once when the component mounts
+    handleResendOtp();
+  }, []);
 
   // Countdown timer logic
   useEffect(() => {
@@ -77,7 +119,7 @@ export default function VerifyOtpPage() {
         setTimer((prev) => prev - 1);
       }, 1000);
     } else if (timer === 0) {
-      setTimerActive(false); // Disable timer when it expires
+      setTimerActive(false);
     }
     return () => clearInterval(interval);
   }, [timerActive, timer]);
@@ -102,6 +144,10 @@ export default function VerifyOtpPage() {
                 type="text"
                 value={digit}
                 onChange={(e) => handleOtpChange(e, index)}
+                onPaste={handleOtpPaste}
+                onKeyDown={(e) => handleKeyDown(e, index)}
+                // Auto-select the input content on focus to enable overwriting
+                onFocus={(e) => e.target.select()}
                 maxLength={1}
                 className="w-14 h-14 text-center text-white bg-[#2a2a2a] border border-zinc-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="-"

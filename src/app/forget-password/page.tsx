@@ -50,8 +50,10 @@ export default function ForgetPasswordPage() {
     if (res.ok) {
       router.push("/login");
     } else {
-      if (data.error === "OTP expired. Please request a new one." || 
-          data.error === "Too many attempts. Please request a new OTP.") {
+      if (
+        data.error === "OTP expired. Please request a new one." ||
+        data.error === "Too many attempts. Please request a new OTP."
+      ) {
         setOtpSent(false);
         setEmail(""); // Optional: clear email if you want them to start fresh
         window.location.reload();
@@ -66,19 +68,60 @@ export default function ForgetPasswordPage() {
     }
   }, [error]);
 
-  // Handle OTP input change
+  // Handle OTP input change: Always overwrite the current value
   const handleOtpChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
-    const value = e.target.value;
-    if (value === "" || /^[0-9]{1}$/.test(value)) {
+    let value = e.target.value;
+
+    // If user types more than one digit (e.g. paste without triggering onPaste)
+    if (value.length > 1) {
+      if (/^\d+$/.test(value)) {
+        const digits = value.split("").slice(0, 6);
+        const newOtp = [...otp];
+        digits.forEach((digit, i) => {
+          if (index + i < 6) {
+            newOtp[index + i] = digit;
+          }
+        });
+        setOtp(newOtp);
+        const nextIndex = index + digits.length;
+        if (nextIndex < 6) {
+          document.getElementById(`otp-input-${nextIndex}`)?.focus();
+        }
+      }
+      return;
+    }
+
+    // Only accept a digit or empty string and overwrite current value
+    if (value === "" || /^[0-9]$/.test(value)) {
       const newOtp = [...otp];
       newOtp[index] = value;
       setOtp(newOtp);
-
-      // Move to next input if valid number
       if (value && index < otp.length - 1) {
-        const nextInput = document.getElementById(`otp-input-${index + 1}`);
-        nextInput?.focus();
+        document.getElementById(`otp-input-${index + 1}`)?.focus();
       }
+    }
+  };
+
+  // Handle paste event: populate all OTP inputs if 6 digits are pasted
+  const handleOtpPaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    const pasteData = e.clipboardData.getData("Text").trim();
+    if (/^\d{6}$/.test(pasteData)) {
+      const pasteDigits = pasteData.split("");
+      setOtp(pasteDigits);
+      // Focus the last input after pasting
+      document.getElementById("otp-input-5")?.focus();
+    }
+  };
+
+  // Handle left/right arrow navigation
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>, index: number) => {
+    if (e.key === "ArrowLeft" && index > 0) {
+      e.preventDefault();
+      document.getElementById(`otp-input-${index - 1}`)?.focus();
+    } else if (e.key === "ArrowRight" && index < otp.length - 1) {
+      e.preventDefault();
+      document.getElementById(`otp-input-${index + 1}`)?.focus();
     }
   };
 
@@ -95,7 +138,9 @@ export default function ForgetPasswordPage() {
         {!otpSent ? (
           <form onSubmit={handleRequestOtp} className="space-y-6">
             <div className="space-y-2">
-              <label htmlFor="email" className="text-sm text-zinc-400">Email</label>
+              <label htmlFor="email" className="text-sm text-zinc-400">
+                Email
+              </label>
               <input
                 id="email"
                 type="email"
@@ -126,6 +171,9 @@ export default function ForgetPasswordPage() {
                   type="text"
                   value={digit}
                   onChange={(e) => handleOtpChange(e, index)}
+                  onPaste={handleOtpPaste}
+                  onKeyDown={(e) => handleKeyDown(e, index)}
+                  onFocus={(e) => e.target.select()}
                   maxLength={1}
                   className="w-14 h-14 text-center text-white bg-[#2a2a2a] border border-zinc-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="-"
@@ -134,7 +182,9 @@ export default function ForgetPasswordPage() {
             </div>
 
             <div className="space-y-2">
-              <label htmlFor="newPassword" className="text-sm text-zinc-400">New Password</label>
+              <label htmlFor="newPassword" className="text-sm text-zinc-400">
+                New Password
+              </label>
               <input
                 id="newPassword"
                 type="password"
