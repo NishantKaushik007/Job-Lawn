@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -194,6 +195,15 @@ export default function RegisterPage() {
               <div className="absolute inset-0 bg-gradient-to-r from-[#00b5ad]/50 via-[#1e40af]/50 to-[#6b21a8]/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl" />
             </Button>
           </form>
+          {/* Footer */}
+          <footer className="pt-6 flex justify-center gap-6 mt-2">
+            <Link href="/terms" className="text-sm text-zinc-400 hover:text-white transition-colors">
+              Terms of Use
+            </Link>
+            <Link href="/privacy" className="text-sm text-zinc-400 hover:text-white transition-colors">
+              Privacy policy
+            </Link>
+          </footer>
         </div>
       </div>
     </div>

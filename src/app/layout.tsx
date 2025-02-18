@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import ClientWrapper from "../components/ClientWrapper";
+import NavbarConditional from "@/components/NavbarConditional"; // Updated import
+import LogoutBarConditional from "@/components/LogoutBarConditional";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,6 +28,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <NavbarConditional />
+        <LogoutBarConditional />
         <ClientWrapper>{children}</ClientWrapper>
       </body>
     </html>
