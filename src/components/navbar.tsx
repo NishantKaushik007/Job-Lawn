@@ -30,17 +30,22 @@ const Navbar = () => {
           </Link>
           
           {/* Desktop Menu */}
-          <div className="hidden md:flex items-center space-x-4">
+          <ul className="hidden md:flex space-x-6">
             {navLinks.map((link) => (
-              <Link
+              <li
                 key={link.name}
-                href={link.path}
-                className="px-3 py-2 rounded-md text-base font-medium text-white hover:text-zinc-500 transition"
+                className="relative group hidden lg:block"
               >
-                {link.name}
-              </Link>
+                <Link
+                  href={link.path}
+                  className="block py-3 text-white hover:text-zinc-500 transition-all duration-200"
+                >
+                  {link.name}
+                </Link>
+                <div className="absolute rounded-lg bottom-0 w-full h-1 bg-gradient-to-r from-[#00b5ad] via-[#1e40af] to-[#6b21a8] hidden group-hover:block transition-all duration-200"></div>
+              </li>
             ))}
-          </div>
+          </ul>
 
           {/* Desktop Right Section */}
           <div className="hidden md:flex items-center space-x-4">
