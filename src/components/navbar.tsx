@@ -11,41 +11,37 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const navLinks = [
-    { name: 'Home', path: '/' },
-    { name: 'Dashboard', path: '/dashboard' },
-    { name: 'Jobs', path: '/dashboard/companies' },
-    { name: 'Support', path: '/support' },
-    { name: 'Pricing', path: '/pricing' },
-    { name: 'About Us', path: '/aboutUs' },
-    { name: 'Contact Us', path: '/contactUs' },
+    // { name: 'Home', path: '/' },
+    { name: 'Jobs', path: '/dashboard' },
+    // { name: 'Support', path: '/support' },
+    // { name: 'Pricing', path: '/pricing' },
+    // { name: 'About Us', path: '/aboutUs' },
+    // { name: 'Contact Us', path: '/contactUs' },
   ];
 
   return (
     <nav className="bg-[#1c1c1c]">
       <div className="max-w-6xl mx-auto px-4">
         <div className="flex justify-between items-center h-16">
-          {/* Logo */}
-          <Link href="/" className="flex-shrink-0 cursor-pointer">
-            <Image src="/favicon.ico" alt="Logo" width={62} height={15} />
-          </Link>
-          
-          {/* Desktop Menu */}
-          <ul className="hidden md:flex space-x-6">
-            {navLinks.map((link) => (
-              <li
-                key={link.name}
-                className="relative group hidden lg:block"
-              >
-                <Link
-                  href={link.path}
-                  className="block py-3 text-white hover:text-zinc-500 transition-all duration-200"
-                >
-                  {link.name}
-                </Link>
-                <div className="absolute rounded-lg bottom-0 w-full h-1 bg-gradient-to-r from-[#00b5ad] via-[#1e40af] to-[#6b21a8] hidden group-hover:block transition-all duration-200"></div>
-              </li>
-            ))}
-          </ul>
+          {/* Logo and Nav Links in the same container */}
+          <div className="flex items-center space-x-6">
+            <Link href="/" className="flex-shrink-0 cursor-pointer">
+              <Image src="/favicon.ico" alt="Logo" width={62} height={15} />
+            </Link>
+            <ul className="hidden md:flex space-x-6">
+              {navLinks.map((link) => (
+                <li key={link.name} className="relative group">
+                  <Link
+                    href={link.path}
+                    className="block py-3 text-white hover:text-zinc-500 transition-all duration-200"
+                  >
+                    {link.name}
+                  </Link>
+                  <div className="absolute rounded-lg bottom-0 w-full h-1 bg-gradient-to-r from-[#00b5ad] via-[#1e40af] to-[#6b21a8] hidden group-hover:block transition-all duration-200"></div>
+                </li>
+              ))}
+            </ul>
+          </div>
 
           {/* Desktop Right Section */}
           <div className="hidden md:flex items-center space-x-4">
