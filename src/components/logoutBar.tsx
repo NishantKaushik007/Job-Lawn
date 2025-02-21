@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import { FiPower } from 'react-icons/fi';
 import { jwtDecode } from 'jwt-decode'; // Adjust import as needed
 
@@ -17,7 +17,16 @@ interface MyJwtPayload {
 
 const LogoutBar = () => {
   const router = useRouter();
+  const pathname = usePathname();
   const [mounted, setMounted] = useState(false);
+
+  // Extract company name from URL if the path matches /dashboard/companies/<companyName>
+  let companyImage: string | null = null;
+  const companyMatch = pathname.match(/\/dashboard\/companies\/([^/]+)/);
+  if (companyMatch) {
+    const companyName = companyMatch[1];
+    companyImage = `/images/companies/${companyName}.png`;
+  }
 
   // Memoized logout handler.
   const handleLogout = useCallback(async () => {
@@ -78,20 +87,33 @@ const LogoutBar = () => {
     return () => clearInterval(intervalId);
   }, [handleLogout, router]);
 
-  // Always call hooks in the same order.
+  // Only render the component after mounting to ensure client-side hooks work as expected.
   if (!mounted) {
     return null;
   }
 
   return (
     <nav className="bg-[#1c1c1c]">
-      <div className="relative max-w-[1080px] mx-auto flex items-center justify-between px-4">
-        {/* Logo as a separate clickable element */}
-        <Link href="/" className="flex flex-row cursor-pointer py-2 pr-7 gap-6">
+      <div className="relative max-w-[1080px] mx-auto flex items-center justify-between px-4 py-2">
+        {/* Logo */}
+        <Link href="/" className="cursor-pointer">
           <Image src="/favicon.ico" alt="Logo" width={62} height={15} />
         </Link>
 
-        {/* Right Section */}
+        {/* Company Image */}
+        {companyImage && (
+          <div className="flex-shrink-0">
+            <Image
+              src={companyImage}
+              alt="Company Logo"
+              width={130}
+              height={40}
+              className="object-contain"
+            />
+          </div>
+        )}
+
+        {/* Logout Buttons */}
         <div className="flex items-center space-x-6">
           {/* Logout button for medium and larger screens */}
           <button
