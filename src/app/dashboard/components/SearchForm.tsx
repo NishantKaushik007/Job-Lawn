@@ -55,11 +55,11 @@ const SearchForm: React.FC<SearchFormProps> = ({ initialKeyword }) => {
         value={keyword}
         onChange={(e) => setKeyword(e.target.value)}
         placeholder="Search Keyword"
-        className="border rounded p-2 w-full sm:w-72 md:w-96 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300 ease-in-out"
+        className="border rounded p-2 w-full sm:w-72 md:w-96 h-10 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300 ease-in-out"
       />
       <button
         type="submit"
-        className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition duration-200 ease-in-out"
+        className="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-1 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 h-10"
         disabled={!keyword}
       >
         Search
@@ -67,7 +67,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ initialKeyword }) => {
       <button
         type="button"
         onClick={handleClear}
-        className="bg-gray-300 text-white p-2 rounded hover:bg-gray-400 transition duration-200 ease-in-out"
+        className="text-white bg-gradient-to-br from-zinc-600 to-zinc-400 hover:bg-gradient-to-bl focus:ring-1 focus:outline-none focus:ring-zinc-300 font-medium rounded-lg text-sm px-5 py-2.5 h-10"
       >
         Clear
       </button>
