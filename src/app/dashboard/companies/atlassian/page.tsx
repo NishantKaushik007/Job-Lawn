@@ -1,6 +1,6 @@
 import DropdownFilter from './DropdownFilter'; // Reusable DropdownFilter component
 import JobCard from '../../components/JobCard/JobCard';
-import Pagination from './Pagination'; // Pagination component for server rendering
+import Pagination from './Pagination'; // Updated Pagination component that accepts loading/disableNext props
 import { jobCategory, country } from '../../../../Data/data'; // Import data for dropdowns
 
 interface JobListing {
@@ -166,7 +166,7 @@ const Atlassian = async ({
   const currentJobs = filteredJobs.slice(indexOfFirstJob, indexOfLastJob);
 
   return (
-    <div  className="p-4">
+    <div className="p-4">
       {/* Dropdown Filters */}
       <div className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4 mb-6">
         <DropdownFilter
@@ -208,7 +208,7 @@ const Atlassian = async ({
           ))}
         </ul>
       ) : (
-        <div>No jobs available for the selected criteria.</div>
+        <div className="text-center text-white mt-4">No job found for selected criteria.</div>
       )}
 
       {/* Pagination */}
@@ -216,6 +216,8 @@ const Atlassian = async ({
         currentPage={currentPage}
         totalResults={filteredJobs.length}
         resultsPerPage={resultsPerPage}
+        loading={false}
+        disableNext={filteredJobs.length < 10}
       />
     </div>
   );

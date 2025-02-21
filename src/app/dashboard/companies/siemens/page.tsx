@@ -185,7 +185,7 @@ const MorganStanley = async ({ searchParams }: { searchParams: Record<string, st
     const searchKeyword = keyword || '';
 
     // Initialize posting date accumulator
-    const newPostingDates: { [key: string]: string } = {}; // Initialize here
+    const newPostingDates: { [key: string]: string } = {};
 
     // Fetch jobs and append job descriptions
     const { jobs, totalJobsCount } = await fetchJobs(filters, currentPage, searchKeyword);
@@ -221,29 +221,33 @@ const MorganStanley = async ({ searchParams }: { searchParams: Record<string, st
 
             {/* Job Cards */}
             <div className="job-list">
-                {jobsWithDetails.map((job) => (
-                    <JobCard
-                        key={job.id}
-                        job={{
-                            title: job.name,
-                            id_icims: job.display_job_id,
-                            posted_date: newPostingDates[job.id] || '', // Use posting date from accumulator
-                            job_path: job.canonicalPositionUrl,
-                            normalized_location: job.locations.join(' | '),
-                            basic_qualifications: '',
-                            description: job.description, // Access description from job object
-                            preferred_qualifications: '',
-                            responsibilities: '',
-                        }}
-                        onToggleDetails={() => console.log(`Toggled details for job ID: ${job.id}`)}
-                        isSelected={searchParams.selectedJobId === job.id}
-                        baseUrl=""
-                    />
-                ))}
+                {jobsWithDetails.length === 0 ? (
+                    <div className='text-center text-white mt-4'>No jobs available for the selected criteria.</div>
+                ) : (
+                    jobsWithDetails.map((job) => (
+                        <JobCard
+                            key={job.id}
+                            job={{
+                                title: job.name,
+                                id_icims: job.display_job_id,
+                                posted_date: newPostingDates[job.id] || '', // Use posting date from accumulator
+                                job_path: job.canonicalPositionUrl,
+                                normalized_location: job.locations.join(' | '),
+                                basic_qualifications: '',
+                                description: job.description,
+                                preferred_qualifications: '',
+                                responsibilities: '',
+                            }}
+                            onToggleDetails={() => console.log(`Toggled details for job ID: ${job.id}`)}
+                            isSelected={searchParams.selectedJobId === job.id}
+                            baseUrl=""
+                        />
+                    ))
+                )}
             </div>
 
             {/* Pagination */}
-            <Pagination currentPage={currentPage} totalResults={totalJobsCount} resultsPerPage={10} updatedSearchParams={transformedFilters} />
+            <Pagination currentPage={currentPage} totalResults={totalJobsCount} resultsPerPage={10} updatedSearchParams={transformedFilters} disableNext={jobs.length < 10} />
         </div>
     );
 };

@@ -116,7 +116,7 @@ const SelectedCompany = () => {
     }));
 
     return (
-        <div className="p-4">
+        <div className="p-4 bg-[#1c1c1c] text-white">
             <label className="block">
                 Select Company:
                 <Select
@@ -126,6 +126,7 @@ const SelectedCompany = () => {
                     isClearable
                     placeholder="Select a company..."
                     components={{ Option: CustomOption }} // Use the custom option component
+                    className='text-black'
                 />
             </label>
         </div>

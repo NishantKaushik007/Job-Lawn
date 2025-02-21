@@ -84,7 +84,7 @@ const LogoutBar = () => {
   }
 
   return (
-    <nav className="bg-gradient-to-r from-gray-900 via-gray-800 to-black w-full">
+    <nav className="bg-[#1c1c1c]">
       <div className="relative max-w-[1080px] mx-auto flex items-center justify-between px-4">
         {/* Logo as a separate clickable element */}
         <Link href="/" className="flex flex-row cursor-pointer py-2 pr-7 gap-6">

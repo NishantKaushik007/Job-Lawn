@@ -167,7 +167,7 @@ const DropdownFilter: React.FC<DropdownFilterProps> = ({ jobs = [] }) => {
               </li>
             ))
           ) : (
-            <li>No jobs available</li>
+            <div className="text-center text-white mt-4">No job found for selected criteria.</div>
           )}
         </ul>
       </div>
@@ -183,7 +183,7 @@ const DropdownFilter: React.FC<DropdownFilterProps> = ({ jobs = [] }) => {
             >
               Previous
             </button>
-            <span className="mx-4">
+            <span className="text-lg font-semibold text-white">
               Page {currentPage}
             </span>
             <button

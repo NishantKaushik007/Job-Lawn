@@ -45,7 +45,8 @@ const DropdownFilter: React.FC<DropdownFilterProps> = ({
         const matchesDiscipline =
           !selectedDiscipline ||
           job.metadata.some(
-            (meta) => meta.name === "Discipline" && meta.value === selectedDiscipline
+            (meta) =>
+              meta.name === "Discipline" && meta.value === selectedDiscipline
           );
         const matchesProgram =
           !selectedProgram ||
@@ -80,51 +81,62 @@ const DropdownFilter: React.FC<DropdownFilterProps> = ({
         <Select
           options={locations.map((loc) => ({ value: loc, label: loc }))}
           placeholder="Filter by Location"
-          onChange={(selectedOption) => setSelectedLocation(selectedOption?.value || null)}
+          onChange={(selectedOption) =>
+            setSelectedLocation(selectedOption?.value || null)
+          }
           isClearable
         />
         <Select
           options={disciplines.map((disc) => ({ value: disc, label: disc }))}
           placeholder="Filter by Discipline"
-          onChange={(selectedOption) => setSelectedDiscipline(selectedOption?.value || null)}
+          onChange={(selectedOption) =>
+            setSelectedDiscipline(selectedOption?.value || null)
+          }
           isClearable
         />
         <Select
           options={programs.map((prog) => ({ value: prog, label: prog }))}
           placeholder="Filter by Program"
-          onChange={(selectedOption) => setSelectedProgram(selectedOption?.value || null)}
+          onChange={(selectedOption) =>
+            setSelectedProgram(selectedOption?.value || null)
+          }
           isClearable
         />
       </div>
 
-      <ul>
-        {currentJobs.map((job) => (
-          <li key={job.id}>
-            <JobCard
-              job={{
-                title: job.title,
-                id_icims: job.id.toString(),
-                posted_date: job.updated_at,
-                job_path: `${job.absolute_url}`,
-                normalized_location: job.location.name || "Remote",
-                basic_qualifications: "",
-                description: "",
-                preferred_qualifications: "",
-                responsibilities: "",
-              }}
-              onToggleDetails={() => {}}
-              isSelected={false} // Check if the job is selected
-              baseUrl="" // Update with your actual base URL
-            />
-          </li>
-        ))}
-      </ul>
+      {currentJobs.length === 0 ? (
+        <div className='text-center text-white mt-4'>No jobs available for the selected criteria.</div>
+      ) : (
+        <ul>
+          {currentJobs.map((job) => (
+            <li key={job.id}>
+              <JobCard
+                job={{
+                  title: job.title,
+                  id_icims: job.id.toString(),
+                  posted_date: job.updated_at,
+                  job_path: `${job.absolute_url}`,
+                  normalized_location: job.location.name || "Remote",
+                  basic_qualifications: "",
+                  description: "",
+                  preferred_qualifications: "",
+                  responsibilities: "",
+                }}
+                onToggleDetails={() => {}}
+                isSelected={false} // Check if the job is selected
+                baseUrl="" // Update with your actual base URL
+              />
+            </li>
+          ))}
+        </ul>
+      )}
 
       <Pagination
         currentPage={currentPage}
         totalPages={Math.ceil(filteredJobs.length / jobsPerPage)}
         onNext={() => setCurrentPage((prev) => prev + 1)}
         onPrevious={() => setCurrentPage((prev) => prev - 1)}
+        disableNext={currentJobs.length < 10}
       />
     </div>
   );

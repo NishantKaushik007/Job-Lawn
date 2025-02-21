@@ -164,7 +164,7 @@ export default async function TuringPage({ searchParams }: TuringProps) {
       {error ? (
         <div className="text-red-500">Error: {error}</div>
       ) : paginatedJobs.length === 0 ? (
-        <div className="text-gray-500">No jobs available.</div>
+        <div className='text-center text-white mt-4'>No jobs available for the selected criteria.</div>
       ) : (
         <ul className="space-y-4">
           {paginatedJobs.map((job) => (
@@ -193,6 +193,7 @@ export default async function TuringPage({ searchParams }: TuringProps) {
         currentPage={currentPage}
         totalPages={Math.ceil(allJobs.length / JOBS_PER_PAGE)}
         updatedSearchParams={sanitizedSearchParams}
+        disableNext={paginatedJobs.length < 10}
       />
     </div>
   );

@@ -152,23 +152,28 @@ const Page = async ({ searchParams }: { searchParams: Record<string, string | un
         />
       </div>
 
-      <ul>
-        {jobs.map((job: Job) => (
-          <li key={job.id_icims}>
-            <JobCard
-              job={job}
-              onToggleDetails={toggleJobDetails} // Placeholder function
-              isSelected={selectedJobId === job.id_icims}
-              baseUrl="https://amazon.jobs"
-            />
-          </li>
-        ))}
-      </ul>
+      {jobs.length === 0 ? (
+        <p className="text-center text-white mt-4">No job found for selected criteria</p>
+      ) : (
+        <ul>
+          {jobs.map((job: Job) => (
+            <li key={job.id_icims}>
+              <JobCard
+                job={job}
+                onToggleDetails={toggleJobDetails} // Placeholder function
+                isSelected={selectedJobId === job.id_icims}
+                baseUrl="https://amazon.jobs"
+              />
+            </li>
+          ))}
+        </ul>
+      )}
 
       <Pagination
         currentPage={currentPage}
         updatedSearchParams={cleanParams} // Use cleaned-up params here
         loading={false}
+        disableNext={jobs.length < 10} // Disables Next button when no jobs are found
       />
     </div>
   );

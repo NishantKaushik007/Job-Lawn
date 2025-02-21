@@ -194,7 +194,7 @@ const Microsoft = async ({ searchParams }: MicrosoftProps) => {
       {error ? (
         <div>{error}</div>
       ) : jobs.length === 0 ? (
-        <div>No jobs available.</div>
+        <div className="text-center text-white mt-4">No job found for selected criteria.</div>
       ) : (
         <ul>
           {jobs.map((job) => (
@@ -224,6 +224,7 @@ const Microsoft = async ({ searchParams }: MicrosoftProps) => {
         currentPage={currentPage}
         updatedSearchParams={sanitizedSearchParams}
         loading={false}
+        disableNext={jobs.length < 10}
       />
     </div>
   );

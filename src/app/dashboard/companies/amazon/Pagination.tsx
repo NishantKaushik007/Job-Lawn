@@ -6,9 +6,10 @@ interface PaginationProps {
   currentPage: number;
   updatedSearchParams: Record<string, string | undefined>;
   loading: boolean; // Add loading prop
+  disableNext?: boolean; // New prop to disable Next button when there are no jobs
 }
 
-const Pagination: React.FC<PaginationProps> = ({ currentPage, updatedSearchParams, loading }) => {
+const Pagination: React.FC<PaginationProps> = ({ currentPage, updatedSearchParams, loading, disableNext = false }) => {
   const handleBackPage = () => {
     if (currentPage > 1) {
       const newPage = currentPage - 1;
@@ -37,14 +38,14 @@ const Pagination: React.FC<PaginationProps> = ({ currentPage, updatedSearchParam
       </button>
 
       {/* Current Page */}
-      <span className="text-lg font-semibold">Page {currentPage}</span>
+      <span className="text-lg font-semibold text-white">Page {currentPage}</span>
 
       {/* Next Button */}
       <button
         onClick={handleNextPage}
-        disabled={loading}
+        disabled={loading || disableNext}
         className={`bg-blue-500 text-white py-2 px-4 rounded-md transition-colors ${
-          loading ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-700'
+          loading || disableNext ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-700'
         }`}
       >
         Next

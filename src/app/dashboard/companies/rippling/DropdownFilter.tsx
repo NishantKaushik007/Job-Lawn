@@ -158,7 +158,7 @@ const DropdownFilter: React.FC<DropdownFilterProps> = ({ jobCategories, location
             </li>
           ))
         ) : (
-          <div>No jobs available for the selected criteria.</div>
+          <div className='text-center text-white mt-4'>No jobs available for the selected criteria.</div>
         )}
       </ul>
 
@@ -167,6 +167,7 @@ const DropdownFilter: React.FC<DropdownFilterProps> = ({ jobCategories, location
         onNext={handleNextPage}
         onBack={handleBackPage}
         hasMoreResults={indexOfLastJob < filteredJobs.length}
+        disableNext={currentJobs.length < 10}
       />
     </div>
   );

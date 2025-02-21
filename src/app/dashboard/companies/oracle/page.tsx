@@ -93,11 +93,11 @@ const fetchJobs = async (
       filters.jobCategory && `selectedCategoriesFacet=${filters.jobCategory[0]}`,
       filters.postingDate && `selectedPostingDatesFacet=${filters.postingDate[0]}`,
       (filters.jobType || filters.industryExp) && `selectedFlexFieldsFacets=${filters.jobType || filters.industryExp}`, // Adjusted logic
-      filters.keyword && `keyword=%22${filters.keyword[0].replace(/\s+/g, '%20')}%22`, // Updated as per your request
+      filters.keyword && `keyword=%22${filters.keyword[0].replace(/\s+/g, '%20')}%22`,
       `limit=10`, // Ensures 10 jobs per page
       `offset=${(page - 1) * 10}`, // Pagination logic
     ]
-      .filter(Boolean) // Filter out undefined/null values
+      .filter(Boolean)
       .join(',');
 
     const sortBy = keyword ? 'RELEVANCY' : 'POSTING_DATES_DESC';
@@ -153,8 +153,16 @@ const fetchJobDetails = async (jobId: string): Promise<JobDetails | null> => {
   }
 };
 
-const JPMorganChase = async ({ searchParams }: { searchParams: Record<string, string | undefined> }) => {
-  const { country: selectedCountry, jobCategory: selectedJobCategory, postingDate: selectedPostingDate, industryExp: selectedIndustryExp, jobType: selectedJobType, page, keyword } = searchParams;
+const Oracle = async ({ searchParams }: { searchParams: Record<string, string | undefined> }) => {
+  const {
+    country: selectedCountry,
+    jobCategory: selectedJobCategory,
+    postingDate: selectedPostingDate,
+    industryExp: selectedIndustryExp,
+    jobType: selectedJobType,
+    page,
+    keyword,
+  } = searchParams;
 
   const selectedCompany = 'Oracle';
 
@@ -170,13 +178,13 @@ const JPMorganChase = async ({ searchParams }: { searchParams: Record<string, st
     postingDate: selectedPostingDate ? [selectedPostingDate] : undefined,
     industryExp: selectedIndustryExp ? [selectedIndustryExp] : undefined,
     jobType: selectedJobType ? [selectedJobType] : undefined,
-    keyword: keyword ? [keyword] : undefined, // Ensure keyword is part of filters
+    keyword: keyword ? [keyword] : undefined,
   };
 
   const transformedFilters = transformFilters(filters);
   const currentPage = parseInt(page || '1', 10);
   const searchKeyword = keyword || '';
-  const { jobs } = await fetchJobs(filters, currentPage, searchKeyword);
+  const { jobs, totalJobsCount } = await fetchJobs(filters, currentPage, searchKeyword);
 
   const jobsWithDetails = await Promise.all(
     jobs.map(async (job) => {
@@ -208,33 +216,47 @@ const JPMorganChase = async ({ searchParams }: { searchParams: Record<string, st
         />
       </div>
 
-      {/* Job Cards */}
-      <div className="job-list">
-        {jobsWithDetails.map((job) => (
-          <JobCard
-            key={job.Id}
-            job={{
-              title: job.Title,
-              id_icims: job.Id,
-              posted_date: job.PostedDate,
-              job_path: `https://careers.oracle.com/jobs/#en/sites/jobsearch/job/${job.Id}`,
-              normalized_location: job.PrimaryLocation,
-              basic_qualifications: job.details?.ExternalQualificationsStr || '',
-              description: job.details?.ExternalDescriptionStr || '',
-              preferred_qualifications: job.details?.ExternalResponsibilitiesStr || '',
-              responsibilities: job.details?.Skills || '',
-            }}
-            onToggleDetails={() => console.log(`Toggled details for job ID: ${job.Id}`)}
-            isSelected={searchParams.selectedJobId === job.Id}
-            baseUrl=""
-          />
-        ))}
-      </div>
+      {/* Job Cards or No Results Message */}
+      {jobsWithDetails.length === 0 ? (
+        <div className="text-center text-white mt-4">
+          No job found for selected criteria.
+        </div>
+      ) : (
+        <>
+          <div className="job-list">
+            {jobsWithDetails.map((job) => (
+              <JobCard
+                key={job.Id}
+                job={{
+                  title: job.Title,
+                  id_icims: job.Id,
+                  posted_date: job.PostedDate,
+                  job_path: `https://careers.oracle.com/jobs/#en/sites/jobsearch/job/${job.Id}`,
+                  normalized_location: job.PrimaryLocation,
+                  basic_qualifications: job.details?.ExternalQualificationsStr || '',
+                  description: job.details?.ExternalDescriptionStr || '',
+                  preferred_qualifications: job.details?.ExternalResponsibilitiesStr || '',
+                  responsibilities: job.details?.Skills || '',
+                }}
+                onToggleDetails={() => console.log(`Toggled details for job ID: ${job.Id}`)}
+                isSelected={searchParams.selectedJobId === job.Id}
+                baseUrl=""
+              />
+            ))}
+          </div>
 
-      {/* Pagination */}
-      <Pagination currentPage={currentPage} updatedSearchParams={transformedFilters} />
+          {/* Pagination */}
+          <Pagination
+            currentPage={currentPage}
+            totalResults={totalJobsCount}
+            resultsPerPage={10}
+            updatedSearchParams={transformedFilters}
+            disableNext={jobsWithDetails.length < 10}
+          />
+        </>
+      )}
     </div>
   );
 };
 
-export default JPMorganChase;
+export default Oracle;

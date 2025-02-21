@@ -6,6 +6,7 @@ interface PaginationProps {
   totalResults: number;
   resultsPerPage: number;
   updatedSearchParams: Record<string, string | undefined>;
+  disableNext?: boolean;
 }
 
 const Pagination: React.FC<PaginationProps> = ({
@@ -13,10 +14,11 @@ const Pagination: React.FC<PaginationProps> = ({
   totalResults,
   resultsPerPage,
   updatedSearchParams,
+  disableNext = false,
 }) => {
   const totalPages = Math.ceil(totalResults / resultsPerPage);
   const isFirstPage = currentPage === 1;
-  const isLastPage = currentPage === totalPages;
+  const nextDisabled = disableNext || currentPage === totalPages;
 
   return (
     <div className="mt-4 flex justify-between items-center space-x-4">
@@ -25,36 +27,32 @@ const Pagination: React.FC<PaginationProps> = ({
         href={`?${new URLSearchParams({
           ...updatedSearchParams,
           page: String(currentPage - 1),
-          start: String((currentPage - 2) * resultsPerPage), // Calculate 'start' for previous page
+          start: String((currentPage - 2) * resultsPerPage),
         }).toString()}`}
         className={`bg-gray-500 text-white py-2 px-4 rounded-md transition-colors ${
           isFirstPage ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-700'
         }`}
         aria-disabled={isFirstPage}
-        // Prevent the click if it's the first page
         onClick={isFirstPage ? (e) => e.preventDefault() : undefined}
       >
         Previous
       </a>
 
       {/* Page Info */}
-      <span className="text-lg font-semibold">
-        Page {currentPage}
-      </span>
+      <span className="text-lg font-semibold text-white">Page {currentPage}</span>
 
       {/* Next Page Link */}
       <a
         href={`?${new URLSearchParams({
           ...updatedSearchParams,
           page: String(currentPage + 1),
-          start: String(currentPage * resultsPerPage), // Calculate 'start' for next page
+          start: String(currentPage * resultsPerPage),
         }).toString()}`}
         className={`bg-blue-500 text-white py-2 px-4 rounded-md transition-colors ${
-          isLastPage ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-700'
+          nextDisabled ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-700'
         }`}
-        aria-disabled={isLastPage}
-        // Prevent the click if it's the last page
-        onClick={isLastPage ? (e) => e.preventDefault() : undefined}
+        aria-disabled={nextDisabled}
+        onClick={nextDisabled ? (e) => e.preventDefault() : undefined}
       >
         Next
       </a>

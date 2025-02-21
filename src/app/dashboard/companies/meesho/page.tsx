@@ -90,31 +90,38 @@ const Page = async ({ searchParams }: { searchParams: Record<string, string | un
         />
       </div>
 
-      <ul>
-        {jobs.map((job: Job) => (
-          <li key={job.id}>
-            <JobCard
-              job={{
-                title: job.text,
-                id_icims: job.id,
-                posted_date: job.createdAt,
-                description: job.additionalPlain || '',
-                qualifications: job.descriptionPlain || '',
-                job_path: job.hostedUrl,
-                normalized_location: job.categories.allLocations.join(', '),
-              }}
-              onToggleDetails={() => {}}
-              isSelected={searchParams.selectedJobId === job.id}
-              baseUrl=""
-            />
-          </li>
-        ))}
-      </ul>
+      {jobs.length > 0 ? (
+        <ul>
+          {jobs.map((job: Job) => (
+            <li key={job.id}>
+              <JobCard
+                job={{
+                  title: job.text,
+                  id_icims: job.id,
+                  posted_date: job.createdAt,
+                  description: job.additionalPlain || '',
+                  qualifications: job.descriptionPlain || '',
+                  job_path: job.hostedUrl,
+                  normalized_location: job.categories.allLocations.join(', '),
+                }}
+                onToggleDetails={() => {}}
+                isSelected={searchParams.selectedJobId === job.id}
+                baseUrl=""
+              />
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <div className="text-center text-white mt-4">
+          No job found for selected criteria.
+        </div>
+      )}
 
       <Pagination
         currentPage={currentPage}
         updatedSearchParams={serializableParams} // Pass only serializable data
         loading={false}
+        disableNext={jobs.length < 10}
       />
     </div>
   );

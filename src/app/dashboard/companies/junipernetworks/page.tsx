@@ -101,7 +101,6 @@ const fetchJobs = async (
 
         const data = await response.json();
         const jobs = data.positions;
-
         const totalJobsCount = data?.items?.[0]?.TotalJobsCount || 0;
 
         // Save to client-side cache (localStorage) if applicable
@@ -195,31 +194,42 @@ const JuniperNetworks = async ({ searchParams }: { searchParams: Record<string, 
                 />
             </div>
 
-            {/* Job Cards */}
-            <div className="job-list">
-                {jobsWithDetails.map((job) => (
-                    <JobCard
-                        key={job.id}
-                        job={{
-                            title: job.name,
-                            id_icims: job.display_job_id,
-                            posted_date: '',
-                            job_path: job.canonicalPositionUrl,
-                            normalized_location: job.locations.join(', '),
-                            basic_qualifications: '',
-                            description: job.description, // Access description from job object
-                            preferred_qualifications: '',
-                            responsibilities: '',
-                        }}
-                        onToggleDetails={() => console.log(`Toggled details for job ID: ${job.id}`)}
-                        isSelected={searchParams.selectedJobId === job.id}
-                        baseUrl=""
-                    />
-                ))}
-            </div>
+            {/* Job Cards or No Jobs Message */}
+            {jobsWithDetails.length > 0 ? (
+                <div className="job-list">
+                    {jobsWithDetails.map((job) => (
+                        <JobCard
+                            key={job.id}
+                            job={{
+                                title: job.name,
+                                id_icims: job.display_job_id,
+                                posted_date: '',
+                                job_path: job.canonicalPositionUrl,
+                                normalized_location: job.locations.join(', '),
+                                basic_qualifications: '',
+                                description: job.description, // Access description from job object
+                                preferred_qualifications: '',
+                                responsibilities: '',
+                            }}
+                            onToggleDetails={() => console.log(`Toggled details for job ID: ${job.id}`)}
+                            isSelected={searchParams.selectedJobId === job.id}
+                            baseUrl=""
+                        />
+                    ))}
+                </div>
+            ) : (
+                <div className="text-center text-white mt-4">No job found for selected criteria.</div>
+            )}
 
             {/* Pagination */}
-            <Pagination currentPage={currentPage} totalResults={totalJobsCount} resultsPerPage={10} updatedSearchParams={transformedFilters}/>
+            <Pagination
+                currentPage={currentPage}
+                totalResults={totalJobsCount}
+                resultsPerPage={RESULTS_PER_PAGE}
+                updatedSearchParams={transformedFilters}
+                loading={false}
+                disableNext={jobsWithDetails.length < 10}
+            />
         </div>
     );
 };

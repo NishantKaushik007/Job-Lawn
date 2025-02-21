@@ -37,7 +37,7 @@ const DropdownFilter = ({
 
   return (
     <div className="filter">
-      <label htmlFor={`${paramKey}-filter`} className="block mb-2">
+      <label htmlFor={`${paramKey}-filter`} className="block mb-2 text-white">
         {label}
       </label>
       <select

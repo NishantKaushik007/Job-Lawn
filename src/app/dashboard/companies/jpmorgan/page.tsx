@@ -92,7 +92,7 @@ const fetchJobs = async (
       filters.country && `locationId=${filters.country[0]}`,
       filters.jobCategory && `selectedCategoriesFacet=${filters.jobCategory[0]}`,
       filters.postingDate && `selectedPostingDatesFacet=${filters.postingDate[0]}`,
-      filters.keyword && `keyword=%22${filters.keyword[0].replace(/\s+/g, '%20')}%22`, // Updated as per your request
+      filters.keyword && `keyword=%22${filters.keyword[0].replace(/\s+/g, '%20')}%22`,
       `limit=10`, // Ensures 10 jobs per page
       `offset=${(page - 1) * 10}`, // Pagination logic
     ]
@@ -165,7 +165,7 @@ const JPMorganChase = async ({ searchParams }: { searchParams: Record<string, st
     country: selectedCountry ? [selectedCountry] : undefined,
     jobCategory: selectedJobCategory ? [selectedJobCategory] : undefined,
     postingDate: selectedPostingDate ? [selectedPostingDate] : undefined,
-    keyword: keyword ? [keyword] : undefined, // Ensure keyword is part of filters
+    keyword: keyword ? [keyword] : undefined,
   };
 
   const transformedFilters = transformFilters(filters);
@@ -201,31 +201,40 @@ const JPMorganChase = async ({ searchParams }: { searchParams: Record<string, st
         />
       </div>
 
-      {/* Job Cards */}
-      <div className="job-list">
-        {jobsWithDetails.map((job) => (
-          <JobCard
-            key={job.Id}
-            job={{
-              title: job.Title,
-              id_icims: job.Id,
-              posted_date: job.PostedDate,
-              job_path: `https://jpmc.fa.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1001/job/${job.Id}`,
-              normalized_location: job.PrimaryLocation,
-              basic_qualifications: job.details?.ExternalQualificationsStr || '',
-              description: job.details?.ExternalDescriptionStr || '',
-              preferred_qualifications: job.details?.ExternalResponsibilitiesStr || '',
-              responsibilities: job.details?.Skills || '',
-            }}
-            onToggleDetails={() => console.log(`Toggled details for job ID: ${job.Id}`)}
-            isSelected={searchParams.selectedJobId === job.Id}
-            baseUrl=""
-          />
-        ))}
-      </div>
+      {/* Job Cards or No Jobs Message */}
+      {jobsWithDetails.length > 0 ? (
+        <div className="job-list">
+          {jobsWithDetails.map((job) => (
+            <JobCard
+              key={job.Id}
+              job={{
+                title: job.Title,
+                id_icims: job.Id,
+                posted_date: job.PostedDate,
+                job_path: `https://jpmc.fa.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1001/job/${job.Id}`,
+                normalized_location: job.PrimaryLocation,
+                basic_qualifications: job.details?.ExternalQualificationsStr || '',
+                description: job.details?.ExternalDescriptionStr || '',
+                preferred_qualifications: job.details?.ExternalResponsibilitiesStr || '',
+                responsibilities: job.details?.Skills || '',
+              }}
+              onToggleDetails={() => console.log(`Toggled details for job ID: ${job.Id}`)}
+              isSelected={searchParams.selectedJobId === job.Id}
+              baseUrl=""
+            />
+          ))}
+        </div>
+      ) : (
+        <div className="text-center text-white mt-4">No job found for selected criteria.</div>
+      )}
 
       {/* Pagination */}
-      <Pagination currentPage={currentPage} updatedSearchParams={transformedFilters} />
+      <Pagination
+        currentPage={currentPage}
+        updatedSearchParams={transformedFilters}
+        loading={false}
+        disableNext={jobsWithDetails.length < 10}
+      />
     </div>
   );
 };

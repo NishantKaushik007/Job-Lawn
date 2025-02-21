@@ -65,7 +65,15 @@ const saveToLocalStorage = (key: string, data: any) => {
 const fetchJobs = async (
   filters: Record<string, string | null>,
   page: number
-): Promise<{ jobs: Job[]; totalPages: number; filterValues: { locations: string[]; departments: string[]; jobSeekerCategories: string[] } }> => {
+): Promise<{
+  jobs: Job[];
+  totalPages: number;
+  filterValues: {
+    locations: string[];
+    departments: string[];
+    jobSeekerCategories: string[];
+  };
+}> => {
   const cacheKey = JSON.stringify({ filters, page });
 
   // Check client-side cache
@@ -99,9 +107,13 @@ const fetchJobs = async (
     const activeJobs = allJobs.filter((job) => job.jobMetadata.activeOnWebsite);
 
     // Extract unique filter values
-    const uniqueLocations = [...new Set(activeJobs.flatMap((job) => job.jobMetadata.jobLocations.map((loc) => loc.name)))];
+    const uniqueLocations = [
+      ...new Set(activeJobs.flatMap((job) => job.jobMetadata.jobLocations.map((loc) => loc.name))),
+    ];
     const uniqueDepartments = [...new Set(activeJobs.map((job) => job.jobHeaders[0]))];
-    const uniqueJobSeekerCategories = [...new Set(activeJobs.flatMap((job) => job.jobMetadata.jobSeekerCategories))];
+    const uniqueJobSeekerCategories = [
+      ...new Set(activeJobs.flatMap((job) => job.jobMetadata.jobSeekerCategories)),
+    ];
 
     // Apply filters
     const filteredJobs = activeJobs.filter((job) => {
@@ -122,14 +134,14 @@ const fetchJobs = async (
     const totalPages = Math.ceil(filteredJobs.length / jobsPerPage);
     const paginatedJobs = filteredJobs.slice((page - 1) * jobsPerPage, page * jobsPerPage);
 
-    const result = { 
-      jobs: paginatedJobs, 
-      totalPages, 
-      filterValues: { 
-        locations: uniqueLocations, 
-        departments: uniqueDepartments, 
-        jobSeekerCategories: uniqueJobSeekerCategories 
-      } 
+    const result = {
+      jobs: paginatedJobs,
+      totalPages,
+      filterValues: {
+        locations: uniqueLocations,
+        departments: uniqueDepartments,
+        jobSeekerCategories: uniqueJobSeekerCategories,
+      },
     };
 
     // Cache result in both client-side and server-side caches
@@ -161,8 +173,7 @@ const DeShaw = async ({ searchParams }: { searchParams: Record<string, string | 
   };
 
   return (
-    <div className='p-4'>
-
+    <div className="p-4">
       {/* Filters */}
       <div className="filters flex flex-col mb-6 space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0 w-full">
         <DropdownFilter
@@ -185,38 +196,53 @@ const DeShaw = async ({ searchParams }: { searchParams: Record<string, string | 
         />
       </div>
 
-      {/* Job Cards */}
-      <div className="job-list">
-        {jobs.map((job) => {
-          const baseUrl =
-            job.jobMetadata.jobLocations.some(location => location.name === 'Gurugram' || location.name === 'Hyderabad' || location.name === 'Bengaluru')
-              ? 'https://www.deshawindia.com/careers/'
-              : 'https://www.deshaw.com/careers/';
+      {/* Job Cards or No Jobs Message */}
+      {jobs.length > 0 ? (
+        <div className="job-list">
+          {jobs.map((job) => {
+            const baseUrl =
+              job.jobMetadata.jobLocations.some(
+                (location) =>
+                  location.name === 'Gurugram' ||
+                  location.name === 'Hyderabad' ||
+                  location.name === 'Bengaluru'
+              )
+                ? 'https://www.deshawindia.com/careers/'
+                : 'https://www.deshaw.com/careers/';
 
-          return (
-            <JobCard
-              key={job.id + job.jobUrl}
-              job={{
-                title: job.displayName,
-                id_icims: job.id,
-                posted_date: '',
-                job_path: job.jobUrl.toLowerCase(),
-                normalized_location: job.jobMetadata.jobLocations.map((location) => location.name).join(', ') || '',
-                basic_qualifications: job.jobDescription.peopleWeAreLookingForStr || '',
-                description: job.jobDescription.websiteDescription || '',
-                preferred_qualifications: '',
-                responsibilities: job.jobDescription.responsibilities || '',
-              }}
-              onToggleDetails={() => handleToggleDetails(job.id)}
-              isSelected={filters.location === job.id}
-              baseUrl={baseUrl}
-            />
-          );
-        })}
-      </div>
+            return (
+              <JobCard
+                key={job.id + job.jobUrl}
+                job={{
+                  title: job.displayName,
+                  id_icims: job.id,
+                  posted_date: '',
+                  job_path: job.jobUrl.toLowerCase(),
+                  normalized_location:
+                    job.jobMetadata.jobLocations.map((location) => location.name).join(', ') || '',
+                  basic_qualifications: job.jobDescription.peopleWeAreLookingForStr || '',
+                  description: job.jobDescription.websiteDescription || '',
+                  preferred_qualifications: '',
+                  responsibilities: job.jobDescription.responsibilities || '',
+                }}
+                onToggleDetails={() => handleToggleDetails(job.id)}
+                isSelected={filters.location === job.id}
+                baseUrl={baseUrl}
+              />
+            );
+          })}
+        </div>
+      ) : (
+        <div className="text-center text-white mt-4">No job found for selected criteria.</div>
+      )}
 
       {/* Pagination */}
-      <Pagination currentPage={currentPage} totalPages={totalPages} />
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        loading={false}
+        disableNext={jobs.length < 10}
+      />
     </div>
   );
 };

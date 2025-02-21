@@ -174,7 +174,9 @@ export default async function MakeMyTrip({
               />
             ))
           ) : (
-            <div>No jobs found.</div>
+            <div className="text-center text-white mt-4">
+              No job found for selected criteria.
+            </div>
           )}
         </div>
 
@@ -182,6 +184,8 @@ export default async function MakeMyTrip({
           currentPage={currentPage}
           totalResults={filteredJobs.length}
           resultsPerPage={resultsPerPage}
+          loading={false}
+          disableNext={filteredJobs.length < 10}
         />
       </div>
     );

@@ -94,17 +94,17 @@ export const PalantirClient: React.FC<PalantirClientProps> = ({ jobs }) => {
 
   // Handlers for select components
   const handleTeamChange = (newValue: unknown, actionMeta: ActionMeta<unknown>) => {
-    const selectedOption = newValue as SingleValue<{ value: string | null; label: string | null }> ;
+    const selectedOption = newValue as SingleValue<{ value: string | null; label: string | null }>;
     setTeamCode(selectedOption?.value || '');
   };
 
   const handleAllLocationsChange = (newValue: unknown, actionMeta: ActionMeta<unknown>) => {
-    const selectedOption = newValue as SingleValue<{ value: string | null; label: string | null }> ;
+    const selectedOption = newValue as SingleValue<{ value: string | null; label: string | null }>;
     setAllLocationsCode(selectedOption?.value || '');
   };
 
   const handleCategoryChange = (newValue: unknown, actionMeta: ActionMeta<unknown>) => {
-    const selectedOption = newValue as SingleValue<{ value: string | null; label: string | null }> ;
+    const selectedOption = newValue as SingleValue<{ value: string | null; label: string | null }>;
     setCategoryCode(selectedOption?.value || '');
   };
 
@@ -121,7 +121,7 @@ export const PalantirClient: React.FC<PalantirClientProps> = ({ jobs }) => {
     <div>
       <div className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4 mb-6">
         {teams.length > 0 && (
-          <label className="flex flex-col">
+          <label className="flex flex-col text-white">
             Team:
             <Select
               inputId="team-select"
@@ -133,7 +133,7 @@ export const PalantirClient: React.FC<PalantirClientProps> = ({ jobs }) => {
           </label>
         )}
         {allLocations.length > 0 && (
-          <label className="flex flex-col">
+          <label className="flex flex-col text-white">
             All Locations:
             <Select
               inputId="location-select"
@@ -145,7 +145,7 @@ export const PalantirClient: React.FC<PalantirClientProps> = ({ jobs }) => {
           </label>
         )}
         {categories.length > 0 && (
-          <label className="flex flex-col">
+          <label className="flex flex-col text-white">
             Category:
             <Select
               inputId="category-select"
@@ -181,21 +181,29 @@ export const PalantirClient: React.FC<PalantirClientProps> = ({ jobs }) => {
             </li>
           ))
         ) : (
-          <div>No jobs available for the selected criteria.</div>
+          <div className="text-center text-white mt-4">
+            No job found for selected criteria.
+          </div>
         )}
       </ul>
 
       <div className="mt-4 flex justify-between space-x-2">
-        <button onClick={handleBackPage} disabled={currentPage === 1} className={`bg-gray-500 text-white py-2 px-4 rounded-md transition-colors ${
-          currentPage === 1 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-700'
-        }`}>
+        <button
+          onClick={handleBackPage}
+          disabled={currentPage === 1}
+          className={`bg-gray-500 text-white py-2 px-4 rounded-md transition-colors ${
+            currentPage === 1 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-700'
+          }`}
+        >
           Previous
         </button>
-        <span>Page {currentPage}</span>
+        <span className='text-lg font-semibold text-white'>Page {currentPage}</span>
         <button
           onClick={handleNextPage}
           disabled={currentJobs.length < resultsPerPage}
-          className="bg-blue-500 text-white py-2 px-4 rounded-md transition-colors hover:bg-blue-700"
+          className={`bg-blue-500 text-white py-2 px-4 rounded-md transition-colors ${
+            currentJobs.length < resultsPerPage ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-700'
+          }`}
         >
           Next
         </button>

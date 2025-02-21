@@ -7,12 +7,16 @@ interface PaginationProps {
   currentPage: number;
   totalResults: number;
   resultsPerPage: number;
+  loading?: boolean;
+  disableNext?: boolean;
 }
 
 const Pagination: React.FC<PaginationProps> = ({
   currentPage,
   totalResults,
   resultsPerPage,
+  loading = false,
+  disableNext = false,
 }) => {
   const router = useRouter();
   
@@ -32,18 +36,22 @@ const Pagination: React.FC<PaginationProps> = ({
     <div className="mt-4 flex justify-between items-center space-x-4">
       <button
         onClick={() => handlePageChange(currentPage - 1)}
-        disabled={currentPage === 1}
-        className={`bg-gray-500 text-white py-2 px-4 rounded-md transition-colors ${currentPage === 1 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-700'}`}
+        disabled={loading || currentPage === 1}
+        className={`bg-gray-500 text-white py-2 px-4 rounded-md transition-colors ${
+          loading || currentPage === 1 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-700'
+        }`}
       >
         Previous
       </button>
-      <span className="text-lg font-semibold">
+      <span className="text-lg font-semibold text-white">
         Page {currentPage}
       </span>
       <button
         onClick={() => handlePageChange(currentPage + 1)}
-        disabled={currentPage === totalPages}
-        className={`bg-blue-500 text-white py-2 px-4 rounded-md transition-colors ${currentPage === totalPages ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-700'}`}
+        disabled={loading || disableNext || currentPage === totalPages}
+        className={`bg-blue-500 text-white py-2 px-4 rounded-md transition-colors ${
+          loading || disableNext || currentPage === totalPages ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-700'
+        }`}
       >
         Next
       </button>

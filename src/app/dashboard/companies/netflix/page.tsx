@@ -119,7 +119,6 @@ const fetchJobs = async (
         console.error('Error fetching jobs:', error);
         throw new Error('Failed to fetch jobs');
     }
-    
 };
 
 const fetchJobDetails = async (jobId: string, postingDateAccumulator: { [key: string]: string }): Promise<Partial<Job>> => {
@@ -153,10 +152,9 @@ const fetchJobDetails = async (jobId: string, postingDateAccumulator: { [key: st
         console.error('Error fetching job details:', error);
         return {}; // Return an empty object on error
     }
-    
 };
 
-const MorganStanley = async ({ searchParams }: { searchParams: Record<string, string | undefined> }) => {
+const Netflix = async ({ searchParams }: { searchParams: Record<string, string | undefined> }) => {
     const { location: selectedLocation, jobCategory: selectedJobCategory, industryExp: selectedIndustryExp, jobType: selectedJobType, page, keyword } = searchParams;
 
     const selectedCompany = 'Netflix';
@@ -178,7 +176,7 @@ const MorganStanley = async ({ searchParams }: { searchParams: Record<string, st
     const searchKeyword = keyword || '';
 
     // Initialize posting date accumulator
-    const newPostingDates: { [key: string]: string } = {}; // Initialize here
+    const newPostingDates: { [key: string]: string } = {};
 
     // Fetch jobs and append job descriptions
     const { jobs, totalJobsCount } = await fetchJobs(filters, currentPage, searchKeyword);
@@ -210,33 +208,46 @@ const MorganStanley = async ({ searchParams }: { searchParams: Record<string, st
                 />
             </div>
 
-            {/* Job Cards */}
-            <div className="job-list">
-                {jobsWithDetails.map((job) => (
-                    <JobCard
-                        key={job.id}
-                        job={{
-                            title: job.name,
-                            id_icims: job.display_job_id,
-                            posted_date: newPostingDates[job.id] || '', // Use posting date from accumulator
-                            job_path: job.canonicalPositionUrl,
-                            normalized_location: job.locations.join(', '),
-                            basic_qualifications: '',
-                            description: job.description, // Access description from job object
-                            preferred_qualifications: '',
-                            responsibilities: '',
-                        }}
-                        onToggleDetails={() => console.log(`Toggled details for job ID: ${job.id}`)}
-                        isSelected={searchParams.selectedJobId === job.id}
-                        baseUrl=""
+            {/* Job Cards or No Results Message */}
+            {jobsWithDetails.length === 0 ? (
+                <div className="text-center text-white mt-4">
+                    No job found for selected criteria.
+                </div>
+            ) : (
+                <>
+                    <div className="job-list">
+                        {jobsWithDetails.map((job) => (
+                            <JobCard
+                                key={job.id}
+                                job={{
+                                    title: job.name,
+                                    id_icims: job.display_job_id,
+                                    posted_date: newPostingDates[job.id] || '',
+                                    job_path: job.canonicalPositionUrl,
+                                    normalized_location: job.locations.join(', '),
+                                    basic_qualifications: '',
+                                    description: job.description,
+                                    preferred_qualifications: '',
+                                    responsibilities: '',
+                                }}
+                                onToggleDetails={() => console.log(`Toggled details for job ID: ${job.id}`)}
+                                isSelected={searchParams.selectedJobId === job.id}
+                                baseUrl=""
+                            />
+                        ))}
+                    </div>
+                    {/* Pagination */}
+                    <Pagination
+                        currentPage={currentPage}
+                        totalResults={totalJobsCount}
+                        resultsPerPage={RESULTS_PER_PAGE}
+                        updatedSearchParams={transformedFilters}
+                        disableNext={jobsWithDetails.length < RESULTS_PER_PAGE}
                     />
-                ))}
-            </div>
-
-            {/* Pagination */}
-            <Pagination currentPage={currentPage} totalResults={totalJobsCount} resultsPerPage={10} updatedSearchParams={transformedFilters} />
+                </>
+            )}
         </div>
     );
 };
 
-export default MorganStanley;
+export default Netflix;

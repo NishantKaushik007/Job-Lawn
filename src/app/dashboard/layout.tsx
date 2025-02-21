@@ -74,7 +74,9 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   }, [handleLogout, router]);
 
   return (
-    <div>
+    <div className="relative min-h-screen bg-[#1c1c1c] overflow-auto">
+      <div className="fixed top-1/4 -right-1/4 w-[600px] h-[600px] bg-[#6366f1]/20 rounded-full blur-[128px] animate-glow pointer-events-none" />
+      <div className="fixed -bottom-1/4 -left-1/4 w-[600px] h-[600px] bg-[#f59e0b]/20 rounded-full blur-[128px] animate-glow-delayed pointer-events-none" />
       {/* You can add your dashboard's header, sidebar, etc. here */}
       {children}
     </div>

@@ -53,7 +53,7 @@ async function fetchJobs(
   const resultsPerPage = 10;
   const queryParams = [
     `${currentPage}?`,
-    `curPage=${(currentPage)}`, // Pagination offset
+    `curPage=${currentPage}`, // Pagination offset
     `pageSize=${resultsPerPage}`, // Results per page
     jobCategoryCodes.length > 0 && `jobFamClsCode=${jobCategoryCodes.join('&jobFamClsCode=')}`,
     countryCodes.length > 0 && `countryCode=${countryCodes.join('&countryCode=')}`,
@@ -129,15 +129,16 @@ const Page = async ({ searchParams }: { searchParams: Record<string, string | un
         />
       </div>
 
-      <ul>
-        {jobs.map((job: Job) => (
-          <li key={job.jobId}>
-            <JobCard
+      {jobs.length > 0 ? (
+        <ul>
+          {jobs.map((job: Job) => (
+            <li key={job.jobId}>
+              <JobCard
                 job={{
                   title: job.jobname,
                   id_icims: job.jobId,
                   posted_date: job.releaseDate,
-                  description: job.mainBusinessEn || '', // Passing job description
+                  description: job.mainBusinessEn || '',
                   qualifications: job.jobRequireEn || '',
                   job_path: `https://career.huawei.com/reccampportal/portal5/campus-recruitment-detail.html?jobId=${job.jobId}&dataSource=1&jobType=3&recruitType=CR&sourceType=001`,
                   normalized_location: job.jobArea,
@@ -146,14 +147,18 @@ const Page = async ({ searchParams }: { searchParams: Record<string, string | un
                 isSelected={searchParams.selectedJobId === job.jobId}
                 baseUrl=""
               />
-          </li>
-        ))}
-      </ul>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <div className="text-center text-white mt-4">No job found for selected criteria.</div>
+      )}
 
       <Pagination
         currentPage={currentPage}
         updatedSearchParams={cleanParams} // Use cleaned-up params here
         loading={false}
+        disableNext={jobs.length < 10}
       />
     </div>
   );

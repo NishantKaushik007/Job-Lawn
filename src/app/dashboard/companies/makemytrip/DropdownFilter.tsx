@@ -34,7 +34,7 @@ const DropdownFilter: React.FC<DropdownFilterProps> = ({
 
   return (
     <div className="flex flex-col">
-      <label htmlFor={searchParamsKey} className="font-semibold mb-2">
+      <label htmlFor={searchParamsKey} className="font-semibold mb-2 text-white">
         {label}
       </label>
       <select

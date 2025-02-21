@@ -7,6 +7,7 @@ interface PaginationProps {
   totalPages: number;
   onNext: () => void;
   onPrevious: () => void;
+  disableNext: boolean;
 }
 
 const Pagination: React.FC<PaginationProps> = ({
@@ -14,23 +15,26 @@ const Pagination: React.FC<PaginationProps> = ({
   totalPages,
   onNext,
   onPrevious,
+  disableNext,
 }) => {
   return (
     <div className="mt-4 flex justify-between space-x-2">
       <button
         onClick={onPrevious}
         disabled={currentPage === 1}
-        className={`bg-gray-500 text-white py-2 px-4 rounded-md transition-colors ${currentPage === 1 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-700'}`}
+        className={`bg-gray-500 text-white py-2 px-4 rounded-md transition-colors ${
+          currentPage === 1 ? "opacity-50 cursor-not-allowed" : "hover:bg-gray-700"
+        }`}
       >
         Previous
       </button>
-      <span>
-        Page {currentPage}
-      </span>
+      <span className="text-lg font-semibold text-white">Page {currentPage}</span>
       <button
         onClick={onNext}
-        disabled={currentPage === totalPages}
-        className={`bg-blue-500 text-white py-2 px-4 rounded-md transition-colors ${currentPage === totalPages ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-700'}`}
+        disabled={disableNext}
+        className={`bg-blue-500 text-white py-2 px-4 rounded-md transition-colors ${
+          disableNext ? "opacity-50 cursor-not-allowed" : "hover:bg-blue-700"
+        }`}
       >
         Next
       </button>

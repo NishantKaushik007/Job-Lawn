@@ -49,10 +49,14 @@ const JobCardClient: React.FC<JobCardClientProps> = ({ job, isSelected, baseUrl 
     }, [baseUrl, job]);
 
     return (
-        <div className={`bg-transparent rounded-lg shadow-md p-4 mb-4 ${isDetailsVisible ? 'bg-gray-100' : 'backdrop-blur-lg bg-opacity-30'}`}>
-            <h3 className="text-lg font-semibold text-center md:text-left">{job.title}</h3>
+        <div className={`rounded-lg shadow-md p-4 mb-4 border-4 border-transparent ${
+            isDetailsVisible ? 'bg--[#1c1c1c]' : 'backdrop-blur-lg bg-opacity-30'
+          }`}
+          style={{ borderImage: 'linear-gradient(to right, #3b82f6, #1e3a8a) 0' }}
+        >
+            <h3 className="text-lg font-semibold text-center md:text-left text-white">{job.title}</h3>
             <div className="flex flex-col md:flex-row items-center mt-1 gap-x-10 justify-between">
-                <span className="flex flex-row items-center">
+                <span className="flex flex-row items-center text-white">
                     <img
                         src="/JobCard Logo/JobID.png"
                         alt="Job ID Icon"
@@ -60,7 +64,7 @@ const JobCardClient: React.FC<JobCardClientProps> = ({ job, isSelected, baseUrl 
                     />
                     <span>{jobId || 'N/A'}</span>
                 </span>
-                <span className="flex flex-row items-center">
+                <span className="flex flex-row items-center text-white">
                     <img
                         src="/JobCard Logo/Salary.png"
                         alt="Salary Icon"
@@ -68,7 +72,7 @@ const JobCardClient: React.FC<JobCardClientProps> = ({ job, isSelected, baseUrl 
                     />
                     <span>{job.salary_range || 'N/A'}</span>
                 </span>
-                <span className="flex flex-row items-center">
+                <span className="flex flex-row items-center text-white">
                     <img
                         src="/JobCard Logo/Calendar.png"
                         alt="Calendar Icon"
@@ -76,7 +80,7 @@ const JobCardClient: React.FC<JobCardClientProps> = ({ job, isSelected, baseUrl 
                     />
                     <span>{formattedPostingDate || 'N/A'}</span>
                 </span>
-                <span className="flex flex-row items-center">
+                <span className="flex flex-row items-center text-white">
                     <img
                         src="/JobCard Logo/Location.png"
                         alt="Location Icon"
@@ -104,7 +108,7 @@ const JobCardClient: React.FC<JobCardClientProps> = ({ job, isSelected, baseUrl 
             </div>
 
             {isDetailsVisible && (
-                <div className="mt-2 border-t pt-2 backdrop-blur-lg bg-opacity-30">
+                <div className="mt-2 border-t pt-2 backdrop-blur-lg bg-opacity-30 text-white">
                     <h4 className="font-semibold">Description:</h4>
                     <div dangerouslySetInnerHTML={{ __html: job.description || '' }} />
                     <h4 className="font-semibold">Basic Qualifications:</h4>

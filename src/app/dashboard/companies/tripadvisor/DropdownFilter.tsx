@@ -26,7 +26,7 @@ interface DropdownFilterProps {
 }
 
 const DropdownFilter: React.FC<DropdownFilterProps> = ({ offices, departments, metadataValues, jobs }) => {
-  const [filteredJobs, setFilteredJobs] = useState<DropdownFilterProps["jobs"]>([]);
+  const [filteredJobs, setFilteredJobs] = useState<DropdownFilterProps["jobs"]>(jobs);
   const [selectedOffice, setSelectedOffice] = useState<string | null>(null);
   const [selectedDepartment, setSelectedDepartment] = useState<string | null>(null);
   const [selectedMetadataValue, setSelectedMetadataValue] = useState<string | null>(null);
@@ -41,15 +41,17 @@ const DropdownFilter: React.FC<DropdownFilterProps> = ({ offices, departments, m
   useEffect(() => {
     const filterJobs = () => {
       const filtered = jobs.filter((job) => {
-        const matchesOffice = !selectedOffice || job.offices.some((office) => office.name === selectedOffice);
-        const matchesDepartment = !selectedDepartment || job.departments.some((department) => department.name === selectedDepartment);
+        const matchesOffice =
+          !selectedOffice || job.offices.some((office) => office.name === selectedOffice);
+        const matchesDepartment =
+          !selectedDepartment || job.departments.some((department) => department.name === selectedDepartment);
         const matchesMetadata = !selectedMetadataValue || job.metadata.some(meta => {
           if (Array.isArray(meta.value)) {
             return meta.value.includes(selectedMetadataValue);
           } else if (typeof meta.value === 'string') {
-            return meta.value === selectedMetadataValue
+            return meta.value === selectedMetadataValue;
           }
-          return false
+          return false;
         });
 
         return matchesOffice && matchesDepartment && matchesMetadata;
@@ -92,34 +94,41 @@ const DropdownFilter: React.FC<DropdownFilterProps> = ({ offices, departments, m
           isClearable
         />
       </div>
-      <ul>
-        {currentJobs.map((job) => (
-          <li key={job.id}>
-            <JobCard
-              job={{
-                title: job.title,
-                id_icims: job.internal_job_id,
-                posted_date: job.updated_at,
-                job_path: `${job.absolute_url}`,
-                normalized_location: job.offices.map(office => office.name).join(' | ') || "N/A", // Corrected line
-                basic_qualifications: "",
-                description: job.content,
-                preferred_qualifications: "",
-                responsibilities: "",
-              }}
-              onToggleDetails={() => {}}
-              isSelected={false}
-              baseUrl=""
-            />
-          </li>
-        ))}
-      </ul>
-      <Pagination
-        currentPage={currentPage}
-        totalPages={Math.ceil(filteredJobs.length / jobsPerPage)}
-        onNext={() => setCurrentPage((prev) => prev + 1)}
-        onPrevious={() => setCurrentPage((prev) => prev - 1)}
-      />
+      
+      {filteredJobs.length === 0 ? (
+        <div className='text-center text-white mt-4'>No jobs available for the selected criteria.</div>
+      ) : (
+        <>
+          <ul>
+            {currentJobs.map((job) => (
+              <li key={job.id}>
+                <JobCard
+                  job={{
+                    title: job.title,
+                    id_icims: job.internal_job_id,
+                    posted_date: job.updated_at,
+                    job_path: `${job.absolute_url}`,
+                    normalized_location: job.offices.map(office => office.name).join(' | ') || "N/A",
+                    basic_qualifications: "",
+                    description: job.content,
+                    preferred_qualifications: "",
+                    responsibilities: "",
+                  }}
+                  onToggleDetails={() => {}}
+                  isSelected={false}
+                  baseUrl=""
+                />
+              </li>
+            ))}
+          </ul>
+          <Pagination
+            currentPage={currentPage}
+            totalPages={Math.ceil(filteredJobs.length / jobsPerPage)}
+            onNext={() => setCurrentPage((prev) => prev + 1)}
+            onPrevious={() => setCurrentPage((prev) => prev - 1)}
+          />
+        </>
+      )}
     </div>
   );
 };

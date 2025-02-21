@@ -172,7 +172,7 @@ export default async function PayPalPage({ searchParams }: { searchParams: Recor
       {error ? (
         <div className="text-red-500">Error: {error}</div>
       ) : jobs.length === 0 ? (
-        <div className="text-gray-500">No jobs available.</div>
+        <div className="text-center text-white mt-4">No job found for selected criteria.</div>
       ) : (
         <ul className="space-y-4">
           {jobs.map((job) => (
@@ -195,7 +195,7 @@ export default async function PayPalPage({ searchParams }: { searchParams: Recor
         </ul>
       )}
 
-      <Pagination currentPage={currentPage} updatedSearchParams={searchParams} />
+      <Pagination currentPage={currentPage} updatedSearchParams={searchParams} loading={false} disableNext={jobs.length < 10} />
     </div>
   );
 }

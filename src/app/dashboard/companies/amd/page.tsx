@@ -94,7 +94,7 @@ async function fetchJobs(filters: Record<string, string | undefined>, page: numb
     filters.country && `country=${filters.country}`,
     filters.jobCategory && `categories=${filters.jobCategory}`,
     filters.industryExp && `tags1=${filters.industryExp}`,
-    `offset=${(page - 1) * 10}`,
+    `page=${page}`,
     `result_limit=10`,
   ]
     .filter(Boolean)
@@ -183,7 +183,7 @@ export default async function AMDPage({ searchParams }: AMDProps) {
       {error ? (
         <div className="text-red-500">Error: {error}</div>
       ) : jobs.length === 0 ? (
-        <div className="text-gray-500">No jobs available.</div>
+        <div className="text-center text-white mt-4">No job found for selected criteria.</div>
       ) : (
         <ul className="space-y-4">
           {jobs.map((job) => (
@@ -202,6 +202,7 @@ export default async function AMDPage({ searchParams }: AMDProps) {
       <Pagination
         currentPage={currentPage}
         updatedSearchParams={sanitizedSearchParams}
+        disableNext={jobs.length < 10} // Disables Next button when no jobs are found
       />
     </div>
   );
