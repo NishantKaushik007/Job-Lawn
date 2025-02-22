@@ -1,5 +1,4 @@
 'use client';
-
 import React, { useState } from 'react';
 import JobCard from '../../components/JobCard/JobCard';
 
@@ -21,22 +20,20 @@ const Pagination: React.FC<PaginationProps> = ({ jobs }) => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const jobsPerPage = 10;
 
-  // If no jobs are available, display a message
   if (jobs.length === 0) {
     return (
       <div className="p-4">
-        <div className="text-center text-white mt-4">No job found for selected criteria.</div>
+        <div className="text-center text-white mt-4">
+          No job found for selected criteria.
+        </div>
       </div>
     );
   }
 
   const totalPages = Math.ceil(jobs.length / jobsPerPage);
-
   const indexOfLastJob = currentPage * jobsPerPage;
   const indexOfFirstJob = indexOfLastJob - jobsPerPage;
   const currentJobs = jobs.slice(indexOfFirstJob, indexOfLastJob);
-
-  // disableNext logic: disable when current page is the last page
   const disableNext = currentPage === totalPages;
 
   const handleNextPage = () => {
@@ -54,7 +51,7 @@ const Pagination: React.FC<PaginationProps> = ({ jobs }) => {
   return (
     <div>
       <ul>
-        {currentJobs.map((job) => (
+        {currentJobs.map(job => (
           <li key={job.id}>
             <JobCard
               job={{
@@ -77,21 +74,23 @@ const Pagination: React.FC<PaginationProps> = ({ jobs }) => {
       </ul>
 
       <div className="mt-4 flex justify-between space-x-2">
+        {/* Previous Button (Zinc Button CSS) */}
         <button
           onClick={handleBackPage}
           disabled={currentPage === 1}
-          className={`bg-gray-500 text-white py-2 px-4 rounded-md transition-colors ${
-            currentPage === 1 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-700'
+          className={`text-white bg-gradient-to-br from-zinc-600 to-zinc-400 hover:bg-gradient-to-bl focus:ring-1 focus:outline-none focus:ring-zinc-300 font-medium rounded-md text-sm py-2 px-4 transition-colors ${
+            currentPage === 1 ? 'opacity-50 cursor-not-allowed' : ''
           }`}
         >
           Previous
         </button>
         <span className="text-lg font-semibold text-white">Page {currentPage}</span>
+        {/* Next Button (Purple to Blue Button CSS) */}
         <button
           onClick={handleNextPage}
           disabled={disableNext}
-          className={`bg-blue-500 text-white py-2 px-4 rounded-md transition-colors ${
-            disableNext ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-700'
+          className={`text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-1 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-md text-sm py-2 px-4 transition-colors ${
+            disableNext ? 'opacity-50 cursor-not-allowed' : ''
           }`}
         >
           Next

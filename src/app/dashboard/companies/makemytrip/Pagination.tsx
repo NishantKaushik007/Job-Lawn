@@ -20,37 +20,37 @@ const Pagination: React.FC<PaginationProps> = ({
 }) => {
   const router = useRouter();
   
-  const totalPages = Math.ceil(totalResults / resultsPerPage); // Calculate total pages
+  const totalPages = Math.ceil(totalResults / resultsPerPage);
   
   const handlePageChange = (page: number) => {
     const searchParams = new URLSearchParams(window.location.search);
-    
-    // Update the page number and retain existing parameters
     searchParams.set('page', String(page));
-
-    // Update the URL without duplicating query parameters
     router.push(`?${searchParams.toString()}`);
   };
 
   return (
     <div className="mt-4 flex justify-between items-center space-x-4">
+      {/* Previous Button (Zinc Button CSS) */}
       <button
         onClick={() => handlePageChange(currentPage - 1)}
         disabled={loading || currentPage === 1}
-        className={`bg-gray-500 text-white py-2 px-4 rounded-md transition-colors ${
-          loading || currentPage === 1 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-700'
+        className={`text-white bg-gradient-to-br from-zinc-600 to-zinc-400 hover:bg-gradient-to-bl focus:ring-1 focus:outline-none focus:ring-zinc-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center ${
+          loading || currentPage === 1 ? 'opacity-50 cursor-not-allowed' : ''
         }`}
       >
         Previous
       </button>
+
       <span className="text-lg font-semibold text-white">
         Page {currentPage}
       </span>
+
+      {/* Next Button (Purple to Blue Button CSS) */}
       <button
         onClick={() => handlePageChange(currentPage + 1)}
         disabled={loading || disableNext || currentPage === totalPages}
-        className={`bg-blue-500 text-white py-2 px-4 rounded-md transition-colors ${
-          loading || disableNext || currentPage === totalPages ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-700'
+        className={`text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-1 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center ${
+          loading || disableNext || currentPage === totalPages ? 'opacity-50 cursor-not-allowed' : ''
         }`}
       >
         Next

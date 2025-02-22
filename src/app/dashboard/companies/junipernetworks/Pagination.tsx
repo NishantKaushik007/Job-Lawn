@@ -24,22 +24,22 @@ const Pagination: React.FC<PaginationProps> = ({
   const previousUrl = `?${new URLSearchParams({
     ...updatedSearchParams,
     page: String(currentPage - 1),
-    start: String((currentPage - 2) * resultsPerPage), // Calculate 'start' for previous page
+    start: String((currentPage - 2) * resultsPerPage),
   }).toString()}`;
 
   const nextUrl = `?${new URLSearchParams({
     ...updatedSearchParams,
     page: String(currentPage + 1),
-    start: String(currentPage * resultsPerPage), // Calculate 'start' for next page
+    start: String(currentPage * resultsPerPage),
   }).toString()}`;
 
   return (
     <div className="mt-4 flex justify-between items-center space-x-4">
-      {/* Previous Page Link */}
+      {/* Previous Page Link (Zinc Button CSS) */}
       <a
         href={isFirstPage || loading ? undefined : previousUrl}
-        className={`bg-gray-500 text-white py-2 px-4 rounded-md transition-colors ${
-          isFirstPage || loading ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-700'
+        className={`text-white bg-gradient-to-br from-zinc-600 to-zinc-400 hover:bg-gradient-to-bl focus:ring-1 focus:outline-none focus:ring-zinc-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center ${
+          isFirstPage || loading ? 'opacity-50 cursor-not-allowed' : ''
         }`}
         aria-disabled={isFirstPage || loading}
       >
@@ -51,11 +51,11 @@ const Pagination: React.FC<PaginationProps> = ({
         Page {currentPage}
       </span>
 
-      {/* Next Page Link */}
+      {/* Next Page Link (Purple to Blue Button CSS) */}
       <a
         href={loading || disableNext || isLastPage ? undefined : nextUrl}
-        className={`bg-blue-500 text-white py-2 px-4 rounded-md transition-colors ${
-          loading || disableNext || isLastPage ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-700'
+        className={`text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-1 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center ${
+          loading || disableNext || isLastPage ? 'opacity-50 cursor-not-allowed' : ''
         }`}
         aria-disabled={loading || disableNext || isLastPage}
       >

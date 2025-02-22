@@ -194,7 +194,7 @@ export default async function GitHubPage({ searchParams }: GitHubProps) {
                   job={job}
                   onToggleDetails={() => {}}
                   isSelected={false}
-                  baseUrl={job.canonical_url}
+                  baseUrl={''}
                 />
               </li>
             ))}

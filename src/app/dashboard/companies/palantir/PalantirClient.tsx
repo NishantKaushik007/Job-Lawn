@@ -129,6 +129,7 @@ export const PalantirClient: React.FC<PalantirClientProps> = ({ jobs }) => {
               onChange={handleTeamChange}
               isClearable
               placeholder="Select a Team"
+              className='text-black'
             />
           </label>
         )}
@@ -141,6 +142,7 @@ export const PalantirClient: React.FC<PalantirClientProps> = ({ jobs }) => {
               onChange={handleAllLocationsChange}
               isClearable
               placeholder="Select a Location"
+              className='text-black'
             />
           </label>
         )}
@@ -153,6 +155,7 @@ export const PalantirClient: React.FC<PalantirClientProps> = ({ jobs }) => {
               onChange={handleCategoryChange}
               isClearable
               placeholder="Select a Category"
+              className='text-black'
             />
           </label>
         )}
@@ -187,22 +190,23 @@ export const PalantirClient: React.FC<PalantirClientProps> = ({ jobs }) => {
         )}
       </ul>
 
+      {/* Pagination Controls */}
       <div className="mt-4 flex justify-between space-x-2">
         <button
           onClick={handleBackPage}
           disabled={currentPage === 1}
-          className={`bg-gray-500 text-white py-2 px-4 rounded-md transition-colors ${
-            currentPage === 1 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-700'
+          className={`text-white bg-gradient-to-br from-zinc-600 to-zinc-400 hover:bg-gradient-to-bl focus:ring-1 focus:outline-none focus:ring-zinc-300 font-medium rounded-lg text-sm px-5 py-2.5 transition-colors ${
+            currentPage === 1 ? 'opacity-50 cursor-not-allowed' : ''
           }`}
         >
           Previous
         </button>
-        <span className='text-lg font-semibold text-white'>Page {currentPage}</span>
+        <span className="text-lg font-semibold text-white">Page {currentPage}</span>
         <button
           onClick={handleNextPage}
           disabled={currentJobs.length < resultsPerPage}
-          className={`bg-blue-500 text-white py-2 px-4 rounded-md transition-colors ${
-            currentJobs.length < resultsPerPage ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-700'
+          className={`text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-1 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 transition-colors ${
+            currentJobs.length < resultsPerPage ? 'opacity-50 cursor-not-allowed' : ''
           }`}
         >
           Next
@@ -211,3 +215,5 @@ export const PalantirClient: React.FC<PalantirClientProps> = ({ jobs }) => {
     </div>
   );
 };
+
+export default PalantirClient;
