@@ -135,7 +135,7 @@ const fetchJobDetails = async (jobId: string) => {
 };
 
 // Server-side component
-export default async function PayPalPage({ searchParams }: { searchParams: Record<string, string> }) {
+export default async function UKGPage({ searchParams }: { searchParams: Record<string, string> }) {
   const currentPage = parseInt(searchParams.page || '1', 10);  // Parse the page number from search params
   const normalizedParams = normalizeParams(searchParams);  // Normalize the query params for filters
   const filters = transformFilters(normalizedParams);

@@ -160,7 +160,7 @@ const fetchJobDetails = async (jobId: string, postingDateAccumulator: { [key: st
     
 };
 
-const MorganStanley = async ({ searchParams }: { searchParams: Record<string, string | undefined> }) => {
+const Siemens = async ({ searchParams }: { searchParams: Record<string, string | undefined> }) => {
     const { location: selectedLocation, jobCategory: selectedJobCategory, experienceLevel: selectedExperienceLevel, jobType: selectedJobType, category: selectedCategory, page, keyword } = searchParams;
 
     const selectedCompany = 'Siemens';
@@ -252,4 +252,4 @@ const MorganStanley = async ({ searchParams }: { searchParams: Record<string, st
     );
 };
 
-export default MorganStanley;
+export default Siemens;

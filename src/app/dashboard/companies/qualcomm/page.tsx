@@ -157,10 +157,10 @@ const fetchJobDetails = async (jobId: string, postingDateAccumulator: { [key: st
     
 };
 
-const MorganStanley = async ({ searchParams }: { searchParams: Record<string, string | undefined> }) => {
+const Qualcomm = async ({ searchParams }: { searchParams: Record<string, string | undefined> }) => {
     const { location: selectedLocation, jobCategory: selectedJobCategory, industryExp: selectedIndustryExp, skills: selectedSkills, page, keyword } = searchParams;
 
-    const selectedCompany = 'Qualcomm';
+    const selectedCompany = 'qualcomm';
 
     const jobCategoryDropdown = (jobCategory ?? []).filter((item) => item.company === selectedCompany);
     const locationDropdown = (location ?? []).filter((item) => item.company === selectedCompany);
@@ -246,4 +246,4 @@ const MorganStanley = async ({ searchParams }: { searchParams: Record<string, st
     );
 };
 
-export default MorganStanley;
+export default Qualcomm;

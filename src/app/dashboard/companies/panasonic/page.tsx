@@ -16,7 +16,7 @@ interface Job {
   salary_range: string;
 }
 
-interface AMDProps {
+interface PanasonicProps {
   searchParams: Record<string, string | undefined>;
 }
 
@@ -134,7 +134,7 @@ async function fetchJobs(filters: Record<string, string | undefined>, page: numb
   }
 }
 
-export default async function AMDPage({ searchParams }: AMDProps) {
+export default async function PanasonicPage({ searchParams }: PanasonicProps) {
   const currentPage = parseInt(searchParams.page || '1', 10); // Default to page 1
   const normalizedParams = normalizeParams(searchParams);
 
