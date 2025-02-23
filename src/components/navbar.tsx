@@ -12,7 +12,7 @@ const Navbar = () => {
 
   const navLinks = [
     // { name: 'Home', path: '/' },
-    { name: 'Jobs', path: '/dashboard' },
+    // { name: 'Jobs', path: '/dashboard' },
     // { name: 'Support', path: '/support' },
     // { name: 'Pricing', path: '/pricing' },
     // { name: 'About Us', path: '/aboutUs' },
@@ -28,7 +28,7 @@ const Navbar = () => {
             <Link href="/" className="flex-shrink-0 cursor-pointer">
               <Image src="/favicon.ico" alt="Logo" width={62} height={15} />
             </Link>
-            <ul className="hidden md:flex space-x-6">
+            {/* <ul className="hidden md:flex space-x-6">
               {navLinks.map((link) => (
                 <li key={link.name} className="relative group">
                   <Link
@@ -40,7 +40,7 @@ const Navbar = () => {
                   <div className="absolute rounded-lg bottom-0 w-full h-1 bg-gradient-to-r from-[#00b5ad] via-[#1e40af] to-[#6b21a8] hidden group-hover:block transition-all duration-200"></div>
                 </li>
               ))}
-            </ul>
+            </ul> */}
           </div>
 
           {/* Desktop Right Section */}
@@ -75,7 +75,7 @@ const Navbar = () => {
       {/* Mobile Menu */}
       {isOpen && (
         <div className="md:hidden px-2 pt-2 pb-3 space-y-1">
-          {navLinks.map((link) => (
+          {/* {navLinks.map((link) => (
             <Link
               key={link.name}
               href={link.path}
@@ -84,7 +84,7 @@ const Navbar = () => {
             >
               {link.name}
             </Link>
-          ))}
+          ))} */}
           <div className="mt-3 space-y-1">
             <button
               onClick={() => {

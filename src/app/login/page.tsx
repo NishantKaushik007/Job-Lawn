@@ -63,13 +63,14 @@ export default function LoginPage() {
       <div className="relative z-10 flex flex-col items-center justify-center py-4 px-4">
         <div className="w-full max-w-md p-6 sm:p-8 md:p-10 bg-[#1c1c1c]/50 rounded-2xl backdrop-blur-xl border border-zinc-800">
           {/* Logo */}
-          <div className="w-8 h-8 mb-8 mx-auto">
-            <svg viewBox="0 0 24 24" className="text-white w-full h-full">
-              <path
-                fill="currentColor"
-                d="M12 2L1 12l11 10 11-10L12 2zm0 18.5L3 12l9-8.5 9 8.5-9 8.5z"
+          <div className="w-16 h-16 mb-8 mx-auto">
+            <Link href="/">
+              <img 
+                src="/logo.png" 
+                alt="Job Lawn" 
+                className="w-full h-full" 
               />
-            </svg>
+            </Link>
           </div>
 
           <h1 className="text-2xl font-semibold text-white text-center mb-8">
