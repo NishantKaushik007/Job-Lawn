@@ -95,7 +95,7 @@ const JobCardClient: React.FC<JobCardClientProps> = ({ job, isSelected, baseUrl 
 
   return (
     <div
-      className={`rounded-lg shadow-md p-4 mb-4 border-4 border-transparent ${
+      className={`select-none rounded-lg shadow-md p-4 mb-4 border-4 border-transparent ${
         isDetailsVisible ? 'bg--[#1c1c1c]' : 'backdrop-blur-lg bg-opacity-30'
       }`}
       style={{ borderImage: 'linear-gradient(to right, #3b82f6, #1e3a8a) 0' }}
