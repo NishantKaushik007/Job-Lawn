@@ -66,7 +66,7 @@ export default function LoginPage() {
           <div className="w-16 h-16 mb-8 mx-auto">
             <Link href="/">
               <img 
-                src="/logo.png" 
+                src="/logo.svg" 
                 alt="Job Lawn" 
                 className="w-full h-full" 
               />

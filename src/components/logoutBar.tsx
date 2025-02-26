@@ -97,7 +97,7 @@ const LogoutBar = () => {
       <div className="relative max-w-[1080px] mx-auto flex items-center justify-between px-4 py-2">
         {/* Logo */}
         <Link href="/" className="cursor-pointer">
-          <Image src="/favicon.ico" alt="Logo" width={62} height={15} />
+          <Image src="/logo.svg" alt="Logo" width={62} height={15} />
         </Link>
 
         {/* Company Image */}

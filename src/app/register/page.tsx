@@ -47,6 +47,18 @@ export default function RegisterPage() {
       {/* Centering container */}
       <div className="relative z-10 flex flex-col items-center justify-center py-8 px-4">
         <div className="w-full max-w-md p-6 sm:p-8 md:p-10 bg-[#2a2a2a]/50 rounded-2xl backdrop-blur-xl border border-zinc-800">
+
+          {/* Logo */}
+          <div className="w-16 h-16 mb-8 mx-auto">
+            <Link href="/">
+              <img 
+                src="/logo.svg" 
+                alt="Job Lawn" 
+                className="w-full h-full" 
+              />
+            </Link>
+          </div>
+
           <h1 className="text-2xl font-semibold text-white text-center mb-8">
             Register
           </h1>

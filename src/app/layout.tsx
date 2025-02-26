@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   title: "Job Lawn",
   description: "One portal for all the job openings from all the highest paying companies",
   icons: {
-    icon: "logo.ico",
+    icon: "/favicon.png",
   },
 };
 

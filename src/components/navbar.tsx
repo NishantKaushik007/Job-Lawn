@@ -26,7 +26,7 @@ const Navbar = () => {
           {/* Logo and Nav Links in the same container */}
           <div className="flex items-center space-x-6">
             <Link href="/" className="flex-shrink-0 cursor-pointer">
-              <Image src="/favicon.ico" alt="Logo" width={62} height={15} />
+              <Image src="/logo.svg" alt="Logo" width={62} height={15} />
             </Link>
             {/* <ul className="hidden md:flex space-x-6">
               {navLinks.map((link) => (
