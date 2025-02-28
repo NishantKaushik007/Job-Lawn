@@ -81,7 +81,7 @@ const fetchJobs = async (
         // Construct the query parameters
         const queryParams = [
             filters.jobType && `EmploymentType=${filters.jobType[0]}`,
-            filters.country && `Country=${filters.country[0]}`,
+            filters.country && `Location=${filters.country[0]}`,
             filters.jobCategory && `BusinessArea=${filters.jobCategory[0]}`,
             filters.industryExp && `PCSJobLevel=${filters.industryExp[0]}`,
             filters.keyword && `query=${filters.keyword[0].replace(/\s+/g, '+')}`, // Handle spaces in keyword
