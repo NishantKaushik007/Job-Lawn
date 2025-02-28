@@ -160,7 +160,7 @@ const fetchJobDetails = async (jobId: string, postingDateAccumulator: { [key: st
 const Qualcomm = async ({ searchParams }: { searchParams: Record<string, string | undefined> }) => {
     const { location: selectedLocation, jobCategory: selectedJobCategory, industryExp: selectedIndustryExp, skills: selectedSkills, page, keyword } = searchParams;
 
-    const selectedCompany = 'qualcomm';
+    const selectedCompany = 'Qualcomm';
 
     const jobCategoryDropdown = (jobCategory ?? []).filter((item) => item.company === selectedCompany);
     const locationDropdown = (location ?? []).filter((item) => item.company === selectedCompany);
